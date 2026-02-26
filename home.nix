@@ -10,7 +10,6 @@
     ./home/sway.nix
     ./home/waybar.nix
     ./home/foot.nix
-    # ./home/mako.nix  # VPSにconfig未配置のため一旦除外
     ./home/xremap.nix
     ./home/wofi.nix
     ./home/copyq.nix
@@ -32,7 +31,6 @@
     xsel
     uv
     espanso-wayland
-    swaylock
     font-manager
   ];
 
