@@ -1,0 +1,13 @@
+# 個人情報を含むファイル
+dotfiles/espanso/match/base.yml
+
+# NixOS自動生成
+hardware-configuration.nix
+
+# バックアップファイル
+*.hm-backup
+*~
+*.swp
+
+# result リンク
+result
