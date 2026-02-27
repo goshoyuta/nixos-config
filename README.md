@@ -18,6 +18,43 @@ home.nix               # Home Manager エントリーポイント
 dotfiles/              # xdg.configFile で配置する生ファイル
 ```
 
+## Arch Linux からの移行準備
+
+NixOS をインストールする前に、現在の Arch 環境からバックアップ・確認しておくこと。
+
+### 設定ファイルの確認
+
+このリポジトリに含まれない個人設定がないか確認:
+
+```bash
+# 現在のパッケージ一覧を保存
+pacman -Qqe > ~/arch-packages.txt
+
+# dotfiles で管理していない設定の確認
+diff <(ls ~/.config/) <(ls dotfiles/)
+
+# SSH 鍵・GPG 鍵のバックアップ
+cp -r ~/.ssh ~/backup/
+cp -r ~/.gnupg ~/backup/
+```
+
+### バックアップ対象
+
+- `~/.ssh/` — SSH 鍵・config
+- `~/.gnupg/` — GPG 鍵
+- `~/ghq/` — ソースコード (Git リポジトリ)
+- ブラウザのプロファイル・ブックマーク
+- Espanso のユーザースニペット (`~/.config/espanso/match/packages/`)
+- その他 `.gitignore` で除外しているファイル
+
+### NixOS インストール USB の作成
+
+```bash
+# NixOS の最小 ISO をダウンロード (https://nixos.org/download)
+# USB に書き込み
+sudo dd if=nixos-minimal-*.iso of=/dev/sdX bs=4M status=progress
+```
+
 ## インストール (ThinkPad X1 Carbon)
 
 ### 1. USB ブート & WiFi 接続
