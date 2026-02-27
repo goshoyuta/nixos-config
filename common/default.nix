@@ -8,7 +8,6 @@
   nixpkgs.config.allowUnfree = true;
 
   # --- システム基本設定 ---
-  services.logrotate.checkConfig = false;
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
   time.timeZone = "Asia/Tokyo";
@@ -21,25 +20,16 @@
     fcitx5.addons = with pkgs; [ fcitx5-mozc ];
   };
 
-  # bash が env 等を見つけられるよう PATH を設定
-  environment.shellInit = ''
-    export PATH="/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
-  '';
-
   # Fish シェル
   programs.fish.enable = true;
 
   # 共通パッケージ
   environment.systemPackages = with pkgs; [
-    vim bash
-    git github-cli
+    vim bash git github-cli
     curl wget aria2 rsync rclone
     htop bottom procs duf dust gdu
     fzf ripgrep fd bat jq tealdeer glow pandoc
-    unzip zip
-    speedtest-cli doggo
-    pciutils usbutils lsof
-    which nkf tree fdupes plocate
+    unzip zip pciutils usbutils which nkf tree fdupes plocate
   ];
 
   # Home Manager

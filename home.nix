@@ -30,6 +30,7 @@
     trash-cli
     uv
   ] ++ lib.optionals isDesktop [
+    brave
     wl-clipboard
     grim
     slurp
