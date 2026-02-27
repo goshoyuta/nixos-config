@@ -1,0 +1,2 @@
+- Always respond in Japanese
+- Provide your answers keeping in mind that the user is not an engineer
