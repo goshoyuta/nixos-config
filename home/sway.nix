@@ -58,6 +58,7 @@ in
 
       input = {
         "type:keyboard" = {
+          xkb_layout = "jp";
           repeat_delay = "175";
           repeat_rate = "55";
         };

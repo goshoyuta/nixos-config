@@ -3,13 +3,10 @@
 {
   environment.systemPackages = with pkgs; [
     # ターミナル
-    foot wezterm
+    foot
 
     # クリップボード & 通知
     xsel xclip wl-clipboard libnotify
-
-    # ファイルマネージャ
-    nnn xplr
   ];
 
   # フォント

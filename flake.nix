@@ -8,9 +8,10 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, ... }:
     let
       system = "x86_64-linux";
       mkHost = { hostDir, extraModules ? [ ], isDesktop }:
@@ -31,9 +32,12 @@
     in
     {
       nixosConfigurations = {
-        laptop = mkHost {
+        x1carbon = mkHost {
           hostDir = ./hosts/laptop/configuration.nix;
           isDesktop = true;
+          extraModules = [
+            nixos-hardware.nixosModules.lenovo-thinkpad-x1-7th-gen
+          ];
         };
 
         vultr-nixos = mkHost {
