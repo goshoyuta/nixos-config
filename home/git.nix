@@ -1,17 +1,24 @@
 { config, pkgs, ... }:
 
 {
+  home.packages = [ pkgs.delta ];
+
   programs.git = {
     enable = true;
+    userName = "goshoyuta";
+    userEmail = "goshoyuta@gmail.com";
 
-    settings = {
-      user = {
-        name = "goshoyuta";
-        email = "goshoyuta@gmail.com";
-      };
+    extraConfig = {
       core = {
         ignorecase = false;
         autocrlf = false;
+        pager = "delta";
+      };
+      interactive.diffFilter = "delta --color-only";
+      delta = {
+        navigate = true;
+        light = false;
+        side-by-side = true;
       };
       color.ui = true;
       merge = {
@@ -23,16 +30,6 @@
       "credential \"https://gist.github.com\"".helper = "!/run/current-system/sw/bin/gh auth git-credential";
       pull.ff = "only";
       init.defaultBranch = "main";
-    };
-  };
-
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
-    options = {
-      navigate = true;
-      light = false;
-      side-by-side = true;
     };
   };
 }

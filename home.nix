@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, isDesktop, ... }:
 
 {
   imports = [
@@ -7,6 +7,7 @@
     ./home/starship.nix
     ./home/nvim.nix
     ./home/tmux.nix
+  ] ++ lib.optionals isDesktop [
     ./home/sway.nix
     ./home/waybar.nix
     ./home/foot.nix
@@ -25,11 +26,12 @@
     eza
     fd
     trash-cli
+    uv
+  ] ++ lib.optionals isDesktop [
     wl-clipboard
     grim
     slurp
     xsel
-    uv
     espanso-wayland
     font-manager
   ];

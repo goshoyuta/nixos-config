@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
-  # TODO: nixos-generate-config で生成された内容をここに配置
+  # このファイルに nixos-generate-config --show-hardware-config の出力を貼り付ける。
+  # 実行例:
+  #   nixos-generate-config --show-hardware-config > /tmp/hw.nix
+  #   # 内容をこのファイルにコピー
 }

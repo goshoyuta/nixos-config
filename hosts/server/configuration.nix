@@ -5,8 +5,6 @@
     ./hardware.nix
     ../../common
     ../../modules/dev-tools.nix
-    ../../modules/desktop.nix
-    <home-manager/nixos>
   ];
 
   networking.hostName = "vultr-nixos";

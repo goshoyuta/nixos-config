@@ -1,16 +1,143 @@
 { config, pkgs, ... }:
 
 {
-  xdg.configFile = {
-    "waybar/config".source = ../dotfiles/waybar/config;
-    "waybar/style.css".source = ../dotfiles/waybar/style.css;
-    "waybar/launch.sh" = {
-      source = ../dotfiles/waybar/launch.sh;
-      executable = true;
+  programs.waybar = {
+    enable = true;
+
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 40;
+        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" ];
+        modules-center = [ "clock" ];
+        modules-right = [
+          "custom/recorder" "tray" "pulseaudio" "backlight"
+          "temperature" "cpu" "memory" "battery" "network"
+          "custom/powermenu"
+        ];
+
+        "sway/mode" = {
+          format = " {}";
+        };
+        "sway/workspaces" = {
+          disable-scroll = true;
+          all-outputs = false;
+          disable-markup = false;
+          format = "{icon}";
+          format-icons = {
+            "1" = "1 <span font='Font Awesome 5 Free 14'>\uf120</span>";
+            "2" = "2 <span font='Font Awesome 5 Free 14'>\uf268</span>";
+            "3" = "3 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "4" = "4 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "5" = "5 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "6" = "6 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "7" = "7 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "8" = "8 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "9" = "9 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+            "10" = "0 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
+          };
+        };
+        tray = {
+          icon-size = 20;
+          spacing = 8;
+        };
+        "sway/window" = {
+          max-length = 60;
+          tooltip = false;
+        };
+        clock = {
+          format = "{:%a %d %b - %H:%M}";
+          tooltip = false;
+        };
+        cpu = {
+          interval = 5;
+          format = "\ufe01 {}%";
+          max-length = 10;
+        };
+        memory = {
+          interval = 15;
+          format = "<span font='Font Awesome 5 Free 9'>\ufe01</span> {used:0.1f}G/{total:0.1f}G";
+          tooltip = false;
+        };
+        "custom/powermenu" = {
+          return-type = "json";
+          exec = "~/.config/waybar/modules/powermenu.sh";
+          format = "<span font='Font Awesome 5 Free 9'>{icon}</span>  {}";
+          format-icons = [ "\uf011" ];
+          interval = 3600;
+          escape = true;
+          on-click = "~/.config/wofi/wofi-power.sh";
+        };
+        "custom/recorder" = {
+          format = "!";
+          return-type = "json";
+          interval = 3;
+          exec = "echo '{\"class\": \"recording\"}'";
+          exec-if = "pgrep wf-recorder";
+          tooltip = false;
+          on-click = "killall -s SIGINT wf-recorder";
+        };
+        battery = {
+          format = "<span font='Font Awesome 5 Free 11'>{icon}</span> {capacity}%{time}";
+          format-icons = [ "\uf244" "\uf243" "\uf242" "\uf241" "\uf240" ];
+          format-time = " ({H}h{M}m)";
+          format-charging = "<span font='Font Awesome 5 Free'>\uf0e7</span>  <span font='Font Awesome 5 Free 11'>{icon}</span>  {capacity}% - {time}";
+          format-full = "<span font='Font Awesome 5 Free'>\uf0e7</span>  <span font='Font Awesome 5 Free 11'>{icon}</span>  Charged";
+          interval = 15;
+          states = {
+            warning = 25;
+            critical = 10;
+          };
+          tooltip = false;
+        };
+        network = {
+          format = "{icon}";
+          format-alt = "<span font='Font Awesome 5 Free 10'>\ufe01</span> \ufe01{ipaddr}/{cidr} {icon}";
+          format-alt-click = "click-left";
+          format-wifi = "<span font='Font Awesome 5 Free 10'>\uf1eb</span> {essid} ({signalStrength}%)";
+          format-ethernet = "<span font='Font Awesome 5 Free 10'>\ufe01</span> {ifname}";
+          format-disconnected = "\u26a0 Disconnected";
+          tooltip = false;
+        };
+        pulseaudio = {
+          format = "<span font='Font Awesome 5 Free 11'>{icon:2}</span>{volume}%";
+          format-alt = "<span font='Font Awesome 5 Free 11'>{icon:2}</span>{volume}%";
+          format-alt-click = "click-right";
+          format-muted = "<span font='Font Awesome 5 Free 11'>\uf6a9</span>";
+          format-icons = {
+            phone = [ " \uf026" " \uf027" " \uf028" " \uf028" ];
+            default = [ "\uf026" "\uf027" "\uf028" "\uf028" ];
+          };
+          scroll-step = 2;
+          on-click = "pavucontrol";
+          tooltip = false;
+        };
+        backlight = {
+          format = "{icon} {percent}%";
+          format-alt = "{icon}";
+          format-alt-click = "click-left";
+          format-icons = [ "\uf185" "\uf185" ];
+          on-scroll-up = "light -A 1";
+          on-scroll-down = "light -U 1";
+        };
+        temperature = {
+          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+          critical-threshold = 75;
+          interval = 5;
+          format = "{icon} {temperatureC}\u00b0";
+          tooltip = false;
+          format-icons = [ "\uf2cb" "\uf2c9" "\uf2c7" "\uf2c5" "\uf2c3" ];
+        };
+      };
     };
-    "waybar/modules" = {
-      source = ../dotfiles/waybar/modules;
-      recursive = true;
-    };
+
+    style = builtins.readFile ../dotfiles/waybar/style.css;
+  };
+
+  # powermenu script
+  xdg.configFile."waybar/modules" = {
+    source = ../dotfiles/waybar/modules;
+    recursive = true;
   };
 }
