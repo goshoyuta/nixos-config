@@ -108,9 +108,9 @@
       if not set -q TMUX
           if command -v tmux >/dev/null 2>&1
               if tmux has-session -t default 2>/dev/null
-                  exec tmux attach-session -t default
+                  tmux attach-session -t default
               else
-                  exec tmux new-session -s default
+                  tmux new-session -s default
               end
           end
       end

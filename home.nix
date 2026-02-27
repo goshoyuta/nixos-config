@@ -7,6 +7,7 @@
     ./home/starship.nix
     ./home/nvim.nix
     ./home/tmux.nix
+    ./home/claude.nix
   ] ++ lib.optionals isDesktop [
     ./home/sway.nix
     ./home/waybar.nix
@@ -25,6 +26,7 @@
   home.packages = with pkgs; [
     eza
     fd
+    duckdb
     trash-cli
     uv
   ] ++ lib.optionals isDesktop [
