@@ -6,7 +6,6 @@
     ../../common
     ../../modules/dev-tools.nix
     ../../modules/desktop.nix
-    <home-manager/nixos>
   ];
 
   networking.hostName = "laptop";  # TODO: 変更する

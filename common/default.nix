@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, isDesktop, ... }:
 
 {
   imports = [
@@ -14,8 +14,8 @@
   time.timeZone = "Asia/Tokyo";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # 日本語入力 (fcitx5)
-  i18n.inputMethod = {
+  # 日本語入力 (fcitx5) — デスクトップのみ
+  i18n.inputMethod = lib.mkIf isDesktop {
     enable = true;
     type = "fcitx5";
     fcitx5.addons = with pkgs; [ fcitx5-mozc ];
@@ -47,6 +47,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hm-backup";
+    extraSpecialArgs = { inherit isDesktop; };
     users.yg = import ../home.nix;
   };
 }

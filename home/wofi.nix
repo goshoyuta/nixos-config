@@ -4,17 +4,21 @@
   xdg.configFile = {
     "wofi/config".source = ../dotfiles/wofi/config;
     "wofi/style.css".source = ../dotfiles/wofi/style.css;
-    "wofi/vars.toml".source = ../dotfiles/wofi/vars.toml;
-    "wofi/colors.rasi".source = ../dotfiles/wofi/colors.rasi;
-    "wofi/launcher.rasi".source = ../dotfiles/wofi/launcher.rasi;
-    "wofi/launcherSmoll.rasi".source = ../dotfiles/wofi/launcherSmoll.rasi;
-    "wofi/launch.sh" = {
-      source = ../dotfiles/wofi/launch.sh;
-      executable = true;
-    };
     "wofi/wofi-power.sh" = {
-      source = ../dotfiles/wofi/wofi-power.sh;
       executable = true;
+      text = ''
+        #!/bin/sh
+        entries="Shutdown\nReboot\nLogout\nSuspend\nHibernate\nCancel"
+        selected=$(echo -e "$entries" | wofi --show dmenu -G -p "Power Menu")
+        case "$selected" in
+          Shutdown)  systemctl poweroff ;;
+          Reboot)    systemctl reboot ;;
+          Logout)    swaymsg exit ;;
+          Suspend)   systemctl suspend ;;
+          Hibernate) systemctl hibernate ;;
+          *)         ;; # Cancel or empty
+        esac
+      '';
     };
   };
 }
