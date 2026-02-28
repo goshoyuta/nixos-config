@@ -5,7 +5,7 @@ ThinkPad X1 Carbon (7th Gen) と Vultr VPS 向けの NixOS + Home Manager 設定
 ## 構成
 
 ```
-flake.nix              # エントリーポイント (nixpkgs, home-manager, nixos-hardware)
+flake.nix              # エントリーポイント (nixpkgs, home-manager, nixos-hardware, agenix)
 common/                # 共通設定 (ロケール, CLI ツール, ユーザー)
 modules/
   desktop.nix          # デスクトップ向けパッケージ・フォント
@@ -16,6 +16,7 @@ hosts/
 home/                  # Home Manager モジュール (fish, sway, nvim, tmux, git ...)
 home.nix               # Home Manager エントリーポイント
 dotfiles/              # xdg.configFile で配置する生ファイル
+secrets/               # agenix 暗号化シークレット (.age) と鍵定義
 ```
 
 ## Arch Linux からの移行準備
@@ -46,6 +47,57 @@ cp -r ~/.gnupg ~/backup/
 - ブラウザのプロファイル・ブックマーク
 - Espanso のユーザースニペット (`~/.config/espanso/match/packages/`)
 - その他 `.gitignore` で除外しているファイル
+
+### シークレットの作成 (NixOS インストール前に実施)
+
+NixOS の設定が `.age` ファイルを参照しているため、`nixos-install` の前に作成してコミットしておく必要がある。
+
+#### 1. Arch 環境に nix をインストール
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+インストール後、**新しいターミナルを開く**か、fish の場合は以下を実行:
+
+```fish
+fish_add_path /nix/var/nix/profiles/default/bin
+```
+
+#### 2. agenix と mkpasswd を取得
+
+`agenix` は nixpkgs には含まれていないので、GitHub の flake から直接取得する。
+`mkpasswd` は nixpkgs の独立パッケージ。
+
+```bash
+nix shell github:ryantm/agenix nixpkgs#mkpasswd
+```
+
+#### 3. secrets/ ディレクトリ内で .age ファイルを作成
+
+`agenix` は同じディレクトリの `secrets.nix` を読むので、**必ず `secrets/` に移動してから**実行する。
+
+```bash
+cd secrets
+
+# --- user-password.age ---
+# パスワードハッシュを生成して、パイプで agenix に渡す
+mkpasswd -m sha-512 "実際のパスワード" | agenix -e user-password.age -i ~/.ssh/id_ed25519
+
+# --- espanso-base.age ---
+# 既存の base.yml をそのまま暗号化
+cat ~/.config/espanso/match/base.yml | agenix -e espanso-base.age -i ~/.ssh/id_ed25519
+```
+
+> **ポイント**: `agenix -e` はそのままだとエディタが開くが、パイプで内容を渡せばエディタなしで作成できる。
+
+#### 4. コミット
+
+```bash
+cd ..
+git add secrets/*.age
+git commit -m "Add encrypted secrets"
+```
 
 ### NixOS インストール USB の作成
 
@@ -124,11 +176,6 @@ reboot
 ### 5. 再起動後
 
 ```bash
-# agenix でシークレットを作成 (初回のみ)
-cd /etc/nixos
-mkpasswd -m sha-512 | agenix -e secrets/user-password.age
-agenix -e secrets/espanso-base.age
-
 # 設定変更の適用
 sudo nixos-rebuild switch --flake /etc/nixos#x1carbon
 ```
@@ -148,47 +195,68 @@ home-manager switch --flake /etc/nixos
 
 ## シークレット管理 (agenix)
 
-パスワードや個人スニペットなどの機密情報は [agenix](https://github.com/ryantm/agenix) で暗号化してリポジトリに保存しています。
-復号には SSH 秘密鍵が必要で、`nixos-rebuild switch` 時に自動復号されます。
+パスワードや個人スニペットなどの機密情報は [agenix](https://github.com/ryantm/agenix) で暗号化してリポジトリに保存している。
+復号には SSH 秘密鍵が必要で、`nixos-rebuild switch` 時に `/run/agenix/` 以下に自動復号される。
+
+### 仕組み
+
+```
+secrets/
+  secrets.nix          # 「どの公開鍵で暗号化するか」の定義
+  user-password.age    # 暗号化されたパスワードハッシュ
+  espanso-base.age     # 暗号化された Espanso スニペット
+```
+
+- `secrets.nix` — 暗号化に使う公開鍵と、対象ファイルの対応を定義
+- `.age` ファイル — `age` で暗号化されたデータ。Git にコミットしても安全
+- 復号は NixOS 起動時に SSH 秘密鍵（ユーザー鍵 or ホスト鍵）を使って自動的に行われる
 
 ### 管理対象
 
-| ファイル | 内容 | 対象ホスト |
-|---------|------|-----------|
-| `secrets/user-password.age` | yg ユーザーのパスワードハッシュ | 全ホスト |
-| `secrets/espanso-base.age` | Espanso 個人スニペット (base.yml) | laptop のみ |
-
-### 初期セットアップ
-
-```bash
-# 1. パスワードハッシュを生成して暗号化
-mkpasswd -m sha-512 | agenix -e secrets/user-password.age
-
-# 2. Espanso スニペットを暗号化
-agenix -e secrets/espanso-base.age
-# エディタが開くので base.yml の内容を貼り付けて保存
-```
+| ファイル | 内容 | 復号先 | 対象ホスト |
+|---------|------|--------|-----------|
+| `secrets/user-password.age` | yg ユーザーのパスワードハッシュ | `/run/agenix/user-password` | 全ホスト |
+| `secrets/espanso-base.age` | Espanso 個人スニペット (base.yml) | `/run/agenix/espanso-base` | laptop のみ |
 
 ### シークレットの編集
 
-```bash
-# パスワード変更
-agenix -e secrets/user-password.age
+NixOS 上では `agenix` がシステムパッケージに入っているので直接使える。
 
-# Espanso スニペット編集
-agenix -e secrets/espanso-base.age
+```bash
+cd /etc/nixos/secrets
+
+# パスワード変更
+mkpasswd -m sha-512 "新しいパスワード" | agenix -e user-password.age
+
+# Espanso スニペット編集 (エディタが開く)
+agenix -e espanso-base.age
+
+# 反映
+sudo nixos-rebuild switch --flake /etc/nixos#x1carbon
+```
+
+NixOS 以外の環境（Arch 等）から編集する場合:
+
+```bash
+nix shell github:ryantm/agenix
+cd secrets
+agenix -e user-password.age -i ~/.ssh/id_ed25519
 ```
 
 ### ホスト鍵の追加
 
-新しいマシンでもシークレットを復号できるようにするには、そのマシンの SSH ホスト鍵を `secrets/secrets.nix` に追加します。
+新しいマシンでもシークレットを復号できるようにするには、そのマシンの SSH ホスト鍵を `secrets/secrets.nix` に追加する。
 
 ```bash
-# マシン上でホスト鍵を取得
+# 1. マシン上でホスト鍵を取得
 ssh-keyscan localhost 2>/dev/null | grep ed25519
 
-# secrets/secrets.nix の publicKeys にホスト鍵を追加後、再暗号化
-agenix --rekey
+# 2. secrets/secrets.nix の publicKeys にホスト鍵を追加
+vim secrets/secrets.nix
+
+# 3. 新しい鍵で再暗号化
+cd secrets
+agenix --rekey -i ~/.ssh/id_ed25519
 ```
 
 ## nixos-hardware
