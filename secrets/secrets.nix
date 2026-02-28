@@ -8,4 +8,5 @@ in
 {
   "user-password.age".publicKeys = [ user-yg ];
   "espanso-base.age".publicKeys = [ user-yg ];
+  "env-local-kouro.age".publicKeys = [ user-yg ];
 }
