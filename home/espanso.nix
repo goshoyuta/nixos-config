@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  # espanso の設定ファイルを配置
-  # match/base.yml は個人情報を含むため gitignore 対象。
-  # 手動で ~/.config/espanso/match/base.yml を配置すること。
   xdg.configFile = {
     "espanso/config/default.yml".source = ../dotfiles/espanso/config/default.yml;
+    # match/base.yml は agenix で暗号化管理 → 復号先へシンボリックリンク
+    "espanso/match/base.yml".source = /run/agenix/espanso-base;
   };
 }

@@ -1,21 +1,22 @@
 { config, pkgs, pkgs-unstable, ... }:
 
 {
-  # Docker
+  # --- Docker ---
   virtualisation.docker.enable = true;
 
+  # --- Packages ---
   environment.systemPackages = with pkgs; [
-    # 開発コア
+    # dev core
     pkgs-unstable.claude-code
     binutils gnumake gcc autoconf automake libtool patch m4 bison flex pkg-config
 
-    # 言語 & ランタイム
+    # languages & runtimes
     nodejs python3 go fnm rustup jdk21
 
-    # 開発 CLI
+    # dev CLI
     lazygit ghq
 
-    # クラウド & インフラ
+    # cloud & infra
     distrobox docker-compose
     google-cloud-sdk stripe-cli
   ];

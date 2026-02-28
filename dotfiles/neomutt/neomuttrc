@@ -1,0 +1,24 @@
+# source ~/.config/neomutt/mailboxes
+source ~/.config/neomutt/keymaps
+source ~/.config/neomutt/colors
+
+set imap_user = ""
+set imap_pass = ""
+
+# Yandex IMAP
+set folder = "imaps://imap.yandex.com/"
+set spoolfile = "+INBOX"
+
+# SSL
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+# no local cache
+set header_cache = ""
+set message_cachedir = ""
+set certificate_file = "~/.mutt/certificates"
+
+# misc
+set move = no
+set copy = yes
+set imap_keepalive = 900

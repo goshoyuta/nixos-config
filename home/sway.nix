@@ -10,6 +10,7 @@ in
     wrapperFeatures.gtk = true;
 
     config = {
+      # --- General ---
       modifier = mod;
       terminal = "foot";
       menu = menu;
@@ -17,17 +18,19 @@ in
         names = [ "Noto Sans JP" ];
         size = 14.0;
       };
-      workspaceLayout = "tabbed";
+      workspaceLayout = "default";
+      defaultWorkspace = "workspace number 1";
 
+      # --- Window ---
       window = {
         titlebar = false;
-        border = 3;
+        border = 0;
         hideEdgeBorders = "smart";
       };
       floating.titlebar = false;
-      floating.border = 3;
-      defaultWorkspace = "workspace number 1";
+      floating.border = 0;
 
+      # --- Colors ---
       colors = {
         focused = {
           border = "#36363a";
@@ -52,10 +55,12 @@ in
         };
       };
 
+      # --- Bar ---
       bars = [{
         command = "waybar";
       }];
 
+      # --- Input ---
       input = {
         "type:keyboard" = {
           xkb_layout = "jp";
@@ -79,26 +84,27 @@ in
       };
 
       seat = {
-        "*" = {
-          hide_cursor = "1000";
-        };
+        "*" = { hide_cursor = "1000"; };
       };
 
+      # --- Keybindings ---
       keybindings = lib.mkOptionDefault {
-        # terminal & window management
+        # app launch
         "${mod}+Return" = "exec foot";
+        "${mod}+space" = "exec ${menu}";
+
+        # window
         "${mod}+Shift+d" = "kill";
         "${mod}+Shift+a" = "focus parent,kill";
-        "${mod}+space" = "exec ${menu}";
-        "${mod}+Shift+space" = "exec ~/.local/bin/hootvoice-toggle.sh";
+        "${mod}+Shift+c" = "reload";
 
-        # focus
+        # focus (hjkl)
         "${mod}+h" = "focus left";
         "${mod}+j" = "focus down";
         "${mod}+k" = "focus up";
         "${mod}+l" = "focus right";
 
-        # move
+        # move (Shift+hjkl)
         "${mod}+Shift+h" = "move left";
         "${mod}+Shift+j" = "move down";
         "${mod}+Shift+k" = "move up";
@@ -109,8 +115,9 @@ in
         "${mod}+s" = "layout stacking";
         "${mod}+w" = "layout tabbed";
         "${mod}+e" = "layout toggle split";
+        "${mod}+r" = "mode resize";
 
-        # workspaces
+        # workspace
         "${mod}+1" = "workspace number 1";
         "${mod}+2" = "workspace number 2";
         "${mod}+3" = "workspace number 3";
@@ -121,13 +128,7 @@ in
         "${mod}+Shift+2" = "move container to workspace number 2";
         "${mod}+Shift+3" = "move container to workspace number 3";
 
-        # reload
-        "${mod}+Shift+c" = "reload";
-
-        # resize mode
-        "${mod}+r" = "mode resize";
-
-        # volume & brightness
+        # media
         "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
         "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
         "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
@@ -147,15 +148,14 @@ in
         # clipboard (cliphist)
         "${mod}+v" = "exec cliphist list | wofi --show dmenu -G insensitive=true | cliphist decode | wl-copy";
 
-        # power & bluetooth
+        # system
         "${mod}+Shift+q" = "exec shutdown -h now";
         "${mod}+Shift+b" = "exec bluetoothctl connect 70:5A:6F:62:A9:D1";
-
-        # cursor toggle
         "${mod}+Shift+9" = "exec swaymsg 'seat seat0 hide_cursor 0'";
         "${mod}+Shift+0" = "exec swaymsg 'seat seat0 hide_cursor 1000'";
       };
 
+      # --- Modes ---
       modes = {
         resize = {
           "h" = "resize shrink width 10 px or 10 ppt";
@@ -168,6 +168,7 @@ in
         };
       };
 
+      # --- Startup ---
       startup = [
         { command = "mako"; }
         { command = "fcitx5"; }
@@ -179,7 +180,7 @@ in
 
     extraConfig = ''
       title_align center
-      for_window [class="^.*"] border pixel 3
+      for_window [class="^.*"] border none
       no_focus [title="^Peek preview$"]
       exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
     '';

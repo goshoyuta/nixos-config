@@ -10,16 +10,16 @@
 
   networking.hostName = "x1carbon";
 
-  # --- ブートローダー ---
+  # --- Boot ---
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
 
-  # --- ネットワーク ---
+  # --- Network ---
   networking.networkmanager.enable = true;
 
-  # --- キーボード (JIS配列) ---
+  # --- Keyboard (JIS) ---
   console.keyMap = "jp106";
 
   # --- Bluetooth ---
@@ -29,7 +29,7 @@
   };
   services.blueman.enable = true;
 
-  # --- サウンド (PipeWire) ---
+  # --- Sound (PipeWire) ---
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -37,22 +37,28 @@
     pulse.enable = true;
   };
 
-  # --- 電源管理 ---
+  # --- Power ---
   # TLP は nixos-hardware が自動有効化。充電閾値のみ追加設定。
   services.tlp.settings = {
     START_CHARGE_THRESH_BAT0 = 75;
     STOP_CHARGE_THRESH_BAT0 = 80;
   };
 
-  # --- ディスプレイ / Wayland ---
+  # --- Display / Wayland ---
   security.polkit.enable = true;
   programs.light.enable = true;
 
-  # --- 指紋認証 (搭載モデルの場合コメントを外す) ---
+  # --- Fingerprint ---
   services.fprintd.enable = true;
 
-  # --- ファームウェアアップデート ---
+  # --- Firmware ---
   services.fwupd.enable = true;
+
+  # --- Secrets (espanso) ---
+  age.secrets.espanso-base = {
+    file = ../../secrets/espanso-base.age;
+    owner = "yg";
+  };
 
   system.stateVersion = "24.11";
 }

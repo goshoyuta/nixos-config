@@ -49,11 +49,26 @@ cp -r ~/.gnupg ~/backup/
 
 ### NixOS インストール USB の作成
 
+1. [NixOS 公式ダウンロードページ](https://nixos.org/download/) から Minimal ISO (x86_64) をダウンロード
+2. USB メモリを差し込み、デバイス名を確認
+
 ```bash
-# NixOS の最小 ISO をダウンロード (https://nixos.org/download)
-# USB に書き込み
-sudo dd if=nixos-minimal-*.iso of=/dev/sdX bs=4M status=progress
+lsblk -o NAME,SIZE,TYPE,MOUNTPOINT
+# USB メモリのデバイス名を確認 (例: /dev/sda)
+# ⚠️ 間違えるとデータが消えるので必ず確認すること
 ```
+
+3. ISO を USB に書き込み
+
+```bash
+sudo dd if=nixos-minimal-*.iso of=/dev/sdX bs=4M status=progress conv=fsync
+# /dev/sdX は実際のデバイス名に置き換える
+sync
+```
+
+- `bs=4M` — 4MB 単位で書き込み (高速化)
+- `status=progress` — 進捗表示
+- `conv=fsync` — 書き込みをディスクに確実に反映
 
 ## インストール (ThinkPad X1 Carbon)
 
@@ -109,8 +124,10 @@ reboot
 ### 5. 再起動後
 
 ```bash
-# パスワード設定 (インストール時に設定していない場合)
-sudo passwd yg
+# agenix でシークレットを作成 (初回のみ)
+cd /etc/nixos
+mkpasswd -m sha-512 | agenix -e secrets/user-password.age
+agenix -e secrets/espanso-base.age
 
 # 設定変更の適用
 sudo nixos-rebuild switch --flake /etc/nixos#x1carbon
@@ -127,6 +144,51 @@ nix flake update --flake /etc/nixos
 
 # Home Manager だけ適用
 home-manager switch --flake /etc/nixos
+```
+
+## シークレット管理 (agenix)
+
+パスワードや個人スニペットなどの機密情報は [agenix](https://github.com/ryantm/agenix) で暗号化してリポジトリに保存しています。
+復号には SSH 秘密鍵が必要で、`nixos-rebuild switch` 時に自動復号されます。
+
+### 管理対象
+
+| ファイル | 内容 | 対象ホスト |
+|---------|------|-----------|
+| `secrets/user-password.age` | yg ユーザーのパスワードハッシュ | 全ホスト |
+| `secrets/espanso-base.age` | Espanso 個人スニペット (base.yml) | laptop のみ |
+
+### 初期セットアップ
+
+```bash
+# 1. パスワードハッシュを生成して暗号化
+mkpasswd -m sha-512 | agenix -e secrets/user-password.age
+
+# 2. Espanso スニペットを暗号化
+agenix -e secrets/espanso-base.age
+# エディタが開くので base.yml の内容を貼り付けて保存
+```
+
+### シークレットの編集
+
+```bash
+# パスワード変更
+agenix -e secrets/user-password.age
+
+# Espanso スニペット編集
+agenix -e secrets/espanso-base.age
+```
+
+### ホスト鍵の追加
+
+新しいマシンでもシークレットを復号できるようにするには、そのマシンの SSH ホスト鍵を `secrets/secrets.nix` に追加します。
+
+```bash
+# マシン上でホスト鍵を取得
+ssh-keyscan localhost 2>/dev/null | grep ed25519
+
+# secrets/secrets.nix の publicKeys にホスト鍵を追加後、再暗号化
+agenix --rekey
 ```
 
 ## nixos-hardware
