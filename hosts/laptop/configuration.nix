@@ -55,6 +55,14 @@
     swaylock.fprintAuth = true;
     login.fprintAuth = true;
   };
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "net.reactivated.fprint.device.enroll" &&
+          subject.isInGroup("users")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
 
   # --- Firmware ---
   services.fwupd.enable = true;

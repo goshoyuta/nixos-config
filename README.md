@@ -193,6 +193,34 @@ nix flake update --flake /etc/nixos
 home-manager switch --flake /etc/nixos
 ```
 
+## 指紋認証のセットアップ
+
+指紋認証 (fprintd) はシステム設定で有効になっているが、**指紋データは手動で登録する必要がある**。
+`sudo` を使わずに実行すること（sudo で実行すると root の指紋として登録されてしまう）。
+
+```bash
+# 指紋を登録する (右人差し指)
+fprintd-enroll
+
+# 別の指を登録したい場合
+fprintd-enroll -f right-thumb   # 右親指
+fprintd-enroll -f left-index-finger  # 左人差し指
+
+# 登録済みの指紋を確認
+fprintd-list yg
+
+# 登録済みの指紋を削除してやり直す場合
+fprintd-delete yg
+```
+
+> **注意**: `fprintd-enroll` で `PermissionDenied` エラーが出る場合は、`sudo nixos-rebuild switch` で設定を再適用してから試す。
+
+登録後は以下の場面で指紋認証が使用可能になる:
+
+- `sudo` 実行時
+- swaylock（画面ロック）の解除時
+- ログイン時
+
 ## シークレット管理 (agenix)
 
 パスワードや個人スニペットなどの機密情報は [agenix](https://github.com/ryantm/agenix) で暗号化してリポジトリに保存している。
