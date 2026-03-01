@@ -66,8 +66,8 @@
       # session
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
-      bind -r ( switch-client -p
-      bind -r ) switch-client -n
+      bind -r 9 switch-client -p
+      bind -r 0 switch-client -n
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"
@@ -86,8 +86,7 @@
       bind -r C-l resize-pane -R 1
 
       # IME off before copy mode (fcitx5)
-      bind -n M-k run-shell "fcitx5-remote -c" \; copy-mode
-      bind [ run-shell "fcitx5-remote -c" \; copy-mode
+      bind Enter run-shell "fcitx5-remote -c" \; copy-mode
 
       # --- Copy Mode (vi) ---
       bind -T copy-mode-vi v send -X begin-selection

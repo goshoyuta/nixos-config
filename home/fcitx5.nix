@@ -2,7 +2,7 @@
 
 {
   xdg.configFile."fcitx5/conf/classicui.conf".text = ''
-    Font=Sans 19
+    Font=Noto Sans CJK JP 16
   '';
 
   xdg.configFile."fcitx5/profile".text = ''
