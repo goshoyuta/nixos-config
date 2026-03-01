@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # --- Sway ---
+  programs.sway.enable = true;
+
   # --- Packages ---
   environment.systemPackages = with pkgs; [
     foot
