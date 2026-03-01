@@ -63,7 +63,7 @@ in
       # --- Input ---
       input = {
         "type:keyboard" = {
-          xkb_layout = "jp";
+          xkb_layout = "us";
           repeat_delay = "175";
           repeat_rate = "55";
         };

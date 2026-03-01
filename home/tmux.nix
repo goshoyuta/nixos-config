@@ -71,7 +71,7 @@
       bind -r C-l resize-pane -R 1
 
       # IME off before copy mode (fcitx5)
-      bind -n M-[ run-shell "fcitx5-remote -c" \; copy-mode
+      bind -n M-k run-shell "fcitx5-remote -c" \; copy-mode
       bind [ run-shell "fcitx5-remote -c" \; copy-mode
 
       # --- Copy Mode (vi) ---
