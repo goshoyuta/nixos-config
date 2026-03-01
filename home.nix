@@ -30,8 +30,8 @@
   home.packages = with pkgs; [
     eza fd duckdb trash-cli uv
   ] ++ lib.optionals isDesktop [
-    brave wl-clipboard
-    grim slurp xsel
+    brave wl-clipboard wofi
+    sway-contrib.grimshot grim slurp xsel
     espanso-wayland font-manager
   ];
 

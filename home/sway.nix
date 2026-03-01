@@ -15,7 +15,7 @@ in
       terminal = "foot";
       menu = menu;
       fonts = {
-        names = [ "Noto Sans JP" ];
+        names = [ "Noto Sans CJK JP" ];
         size = 14.0;
       };
       workspaceLayout = "default";
