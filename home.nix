@@ -1,4 +1,4 @@
-{ config, pkgs, lib, isDesktop, ... }:
+{ config, pkgs, pkgs-unstable, lib, isDesktop, ... }:
 
 {
   # --- Imports ---

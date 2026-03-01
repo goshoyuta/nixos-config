@@ -148,6 +148,10 @@ in
         # clipboard (cliphist)
         "${mod}+v" = "exec cliphist list | wofi --show dmenu -G insensitive=true | cliphist decode | wl-copy";
 
+        # IME
+        "Henkan_Mode" = "exec fcitx5-remote -o";
+        "Muhenkan" = "exec fcitx5-remote -c";
+
         # system
         "${mod}+Shift+q" = "exec shutdown -h now";
         "${mod}+Shift+b" = "exec bluetoothctl connect 70:5A:6F:62:A9:D1";
@@ -172,6 +176,7 @@ in
       startup = [
         { command = "mako"; }
         { command = "fcitx5"; }
+        { command = "xremap ${config.xdg.configHome}/xremap/config.yml"; }
         { command = "wl-paste --watch cliphist store"; }
         { command = ''swaymsg "workspace 1; exec foot;"''; }
         { command = ''swaymsg "workspace 2; exec brave;"''; }

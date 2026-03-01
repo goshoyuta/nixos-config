@@ -6,55 +6,55 @@ modmap:
   - name: Global
     remap:
       CapsLock:
-        alone: ESC 
+        alone: Esc
         held: Ctrl_L
-      MUHENKAN:
-        alone: MUHENKAN 
-        held: KEY_F23 
-      HENKAN:
-        alone: HENKAN 
-        held: KEY_F24 
+      Muhenkan:
+        alone: Muhenkan
+        held: F23
+      Henkan:
+        alone: Henkan
+        held: F24
 
 keymap:
   - name: Global
     remap:
-      KEY_F23-K: UP
-      KEY_F23-H: LEFT
-      KEY_F23-J: DOWN
-      KEY_F23-L: RIGHT
-      KEY_F23-U: PAGEUP
-      KEY_F23-O: PAGEDOWN
-      KEY_F23-M: ENTER
-      KEY_F23-F: BACKSPACE
-      KEY_F23-D: DELETE
-      KEY_F23-A: HOME
-      KEY_F23-E: END
-      KEY_F23-S: ENTER
-      KEY_F24-H: KEY_MINUS
-      KEY_F24-J: KEY_EQUAL
-      KEY_F24-K: KEY_LEFTBRACE
-      KEY_F24-L: KEY_RIGHTBRACE
-      KEY_F24-SEMICOLON: KEY_BACKSLASH
-      KEY_F24-APOSTROPHE: KEY_GRAVE
-      KEY_F24-Q: KEY_1
-      KEY_F24-W: KEY_2
-      KEY_F24-E: KEY_3
-      KEY_F24-R: KEY_4
-      KEY_F24-T: KEY_5
-      KEY_F24-Y: KEY_6
-      KEY_F24-U: KEY_7
-      KEY_F24-I: KEY_8
-      KEY_F24-O: KEY_9
-      KEY_F24-P: KEY_0
-      KEY_F23-KEY_F24-Q: KEY_F1
-      KEY_F23-KEY_F24-W: KEY_F2
-      KEY_F23-KEY_F24-E: KEY_F3
-      KEY_F23-KEY_F24-R: KEY_F4
-      KEY_F23-KEY_F24-T: KEY_F5
-      KEY_F23-KEY_F24-Y: KEY_F6
-      KEY_F23-KEY_F24-U: KEY_F7
-      KEY_F23-KEY_F24-I: KEY_F8
-      KEY_F23-KEY_F24-O: KEY_F9
-      KEY_F23-KEY_F24-P: KEY_F10
-      KEY_F23-KEY_F24-A: KEY_F11
-      KEY_F23-KEY_F24-S: KEY_F12
+      F23-K: Up
+      F23-H: Left
+      F23-J: Down
+      F23-L: Right
+      F23-U: PageUp
+      F23-O: PageDown
+      F23-M: Enter
+      F23-F: BackSpace
+      F23-D: Delete
+      F23-A: Home
+      F23-E: End
+      F23-S: Enter
+      F24-H: Minus
+      F24-J: Equal
+      F24-K: LeftBrace
+      F24-L: RightBrace
+      F24-Semicolon: BackSlash
+      F24-Apostrophe: Grave
+      F24-Q: KEY_1
+      F24-W: KEY_2
+      F24-E: KEY_3
+      F24-R: KEY_4
+      F24-T: KEY_5
+      F24-Y: KEY_6
+      F24-U: KEY_7
+      F24-I: KEY_8
+      F24-O: KEY_9
+      F24-P: KEY_0
+      F23-F24-Q: F1
+      F23-F24-W: F2
+      F23-F24-E: F3
+      F23-F24-R: F4
+      F23-F24-T: F5
+      F23-F24-Y: F6
+      F23-F24-U: F7
+      F23-F24-I: F8
+      F23-F24-O: F9
+      F23-F24-P: F10
+      F23-F24-A: F11
+      F23-F24-S: F12

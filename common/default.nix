@@ -1,4 +1,4 @@
-{ config, pkgs, lib, isDesktop, ... }:
+{ config, pkgs, pkgs-unstable, lib, isDesktop, ... }:
 
 {
   imports = [ ./users.nix ];
@@ -35,7 +35,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hm-backup";
-    extraSpecialArgs = { inherit isDesktop; };
+    extraSpecialArgs = { inherit isDesktop pkgs-unstable; };
     users.yg = import ../home.nix;
   };
 }
