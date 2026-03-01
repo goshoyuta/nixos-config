@@ -7,7 +7,7 @@
       # --- General ---
       main = {
         term = "xterm-256color";
-        font = "Cica:size=20";
+        font = "HackGen:size=18";
         pad = "30x10";
       };
 

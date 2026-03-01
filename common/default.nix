@@ -23,6 +23,16 @@
     fcitx5.addons = with pkgs; [ fcitx5-mozc ];
   };
 
+  # --- Sudo ---
+  security.sudo.extraRules = [
+    {
+      users = [ "yg" ];
+      commands = [
+        { command = "ALL"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
+
   # --- Shell ---
   programs.fish.enable = true;
 
