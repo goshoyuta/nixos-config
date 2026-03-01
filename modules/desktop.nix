@@ -1,18 +1,13 @@
 { config, pkgs, ... }:
 
 {
+  # --- Packages ---
   environment.systemPackages = with pkgs; [
-    # ターミナル
-    foot wezterm
-
-    # クリップボード & 通知
+    foot
     xsel xclip wl-clipboard libnotify
-
-    # ファイルマネージャ
-    nnn xplr
   ];
 
-  # フォント
+  # --- Fonts ---
   fonts.packages = with pkgs; [
     mplus-outline-fonts.githubRelease
   ];

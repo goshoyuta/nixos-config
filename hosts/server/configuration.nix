@@ -9,7 +9,7 @@
 
   networking.hostName = "vultr-nixos";
 
-  # SSH
+  # --- SSH ---
   services.openssh = {
     enable = true;
     settings = {

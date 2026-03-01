@@ -1,9 +1,6 @@
 # マシン固有のエントリポイント（各PCで異なる）
 /configuration.nix
 
-# 個人情報を含むファイル
-dotfiles/espanso/match/base.yml
-
 # NixOS 自動生成（各ホストに hardware.nix として管理）
 hardware-configuration.nix
 

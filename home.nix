@@ -1,6 +1,7 @@
 { config, pkgs, lib, isDesktop, ... }:
 
 {
+  # --- Imports ---
   imports = [
     ./home/fish.nix
     ./home/git.nix
@@ -8,6 +9,7 @@
     ./home/nvim.nix
     ./home/tmux.nix
     ./home/claude.nix
+    ./home/neomutt.nix
   ] ++ lib.optionals isDesktop [
     ./home/sway.nix
     ./home/waybar.nix
@@ -19,23 +21,18 @@
     ./home/swaylock.nix
   ];
 
+  # --- User ---
   home.username = "yg";
   home.homeDirectory = "/home/yg";
   home.stateVersion = "24.11";
 
+  # --- Packages ---
   home.packages = with pkgs; [
-    eza
-    fd
-    duckdb
-    trash-cli
-    uv
+    eza fd duckdb trash-cli uv
   ] ++ lib.optionals isDesktop [
-    wl-clipboard
-    grim
-    slurp
-    xsel
-    espanso-wayland
-    font-manager
+    brave wl-clipboard
+    grim slurp xsel
+    espanso-wayland font-manager
   ];
 
   programs.home-manager.enable = true;

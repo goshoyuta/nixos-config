@@ -6,6 +6,7 @@
     defaultEditor = true;
   };
 
+  # dotfiles からシンボリックリンク (lazy-lock.json は lazy.nvim が書き込むため管理外)
   xdg.configFile = {
     "nvim/init.lua".source = ../dotfiles/nvim/init.lua;
     "nvim/lua" = {
@@ -16,6 +17,5 @@
       source = ../dotfiles/nvim/snippets;
       recursive = true;
     };
-    # lazy-lock.json は lazy.nvim が書き込むので HM 管理外にする
   };
 }

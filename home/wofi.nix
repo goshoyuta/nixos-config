@@ -4,6 +4,8 @@
   xdg.configFile = {
     "wofi/config".source = ../dotfiles/wofi/config;
     "wofi/style.css".source = ../dotfiles/wofi/style.css;
+
+    # power menu script
     "wofi/wofi-power.sh" = {
       executable = true;
       text = ''

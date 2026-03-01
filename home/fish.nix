@@ -4,6 +4,7 @@
   programs.fish = {
     enable = true;
 
+    # --- Abbreviations ---
     shellAbbrs = {
       # cd
       ".." = "cd ..";
@@ -77,17 +78,19 @@
       ki = "kilo";
     };
 
+    # --- Login Shell ---
     loginShellInit = ''
       if test -z "$DISPLAY" -a (tty) = "/dev/tty1"
           exec sway
       end
     '';
 
+    # --- Interactive Shell ---
     interactiveShellInit = ''
-      # greeting 無効化
+      # greeting
       set fish_greeting
 
-      # ロケール
+      # locale
       set -x LANG en_US.UTF-8
       set -x LC_ALL en_US.UTF-8
 
@@ -100,11 +103,11 @@
       set -x FZF_DEFAULT_COMMAND 'rg --hidden -l ""'
       set -x FZF_DEFAULT_OPTS "--layout=reverse --border"
 
-      # キーバインド
+      # keybindings
       bind \cw backward-kill-word
       bind \cg __ghq_repository_search
 
-      # tmux 自動起動
+      # tmux auto-start
       if not set -q TMUX
           if command -v tmux >/dev/null 2>&1
               if tmux has-session -t default 2>/dev/null
@@ -116,6 +119,7 @@
       end
     '';
 
+    # --- Functions ---
     functions = {
       __ghq_repository_search = {
         description = "Repository Search";
@@ -149,6 +153,7 @@
       };
     };
 
+    # --- Plugins ---
     plugins = [
       {
         name = "fzf.fish";

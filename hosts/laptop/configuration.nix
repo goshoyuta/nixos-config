@@ -8,7 +8,62 @@
     ../../modules/desktop.nix
   ];
 
-  networking.hostName = "laptop";  # TODO: 変更する
+  networking.hostName = "x1carbon";
 
-  system.stateVersion = "24.11";  # TODO: 適切なバージョンに変更
+  # --- Boot ---
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
+
+  # --- Network ---
+  networking.networkmanager.enable = true;
+
+  # --- Keyboard (JIS) ---
+  console.keyMap = "jp106";
+
+  # --- Bluetooth ---
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
+
+  # --- Sound (PipeWire) ---
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # --- Power ---
+  # TLP は nixos-hardware が自動有効化。充電閾値のみ追加設定。
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 75;
+    STOP_CHARGE_THRESH_BAT0 = 80;
+  };
+
+  # --- Display / Wayland ---
+  security.polkit.enable = true;
+  programs.light.enable = true;
+
+  # --- Fingerprint ---
+  services.fprintd.enable = true;
+
+  # --- Firmware ---
+  services.fwupd.enable = true;
+
+  # --- Secrets ---
+  age.secrets.espanso-base = {
+    file = ../../secrets/espanso-base.age;
+    owner = "yg";
+  };
+  age.secrets.env-local-kouro = {
+    file = ../../secrets/env-local-kouro.age;
+    owner = "yg";
+    path = "/home/yg/ghq/github.com/fiveinc/kouro.info/.env.local";
+  };
+
+  system.stateVersion = "24.11";
 }

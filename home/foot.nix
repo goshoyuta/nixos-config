@@ -4,11 +4,14 @@
   programs.foot = {
     enable = true;
     settings = {
+      # --- General ---
       main = {
         term = "xterm-256color";
         font = "Cica:size=20";
         pad = "30x10";
       };
+
+      # --- Colors (Tokyo Night) ---
       colors = {
         background = "1a1b26";
         foreground = "c0caf5";
@@ -29,6 +32,8 @@
         bright6 = "7dcfff";
         bright7 = "c0caf5";
       };
+
+      # --- Keybindings ---
       key-bindings = {
         show-urls-launch = "Control+Shift+K";
         search-start = "none";

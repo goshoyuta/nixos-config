@@ -6,6 +6,7 @@
 
     settings = {
       mainBar = {
+        # --- Layout ---
         layer = "top";
         position = "top";
         height = 40;
@@ -17,6 +18,7 @@
           "custom/powermenu"
         ];
 
+        # --- Sway ---
         "sway/mode" = {
           format = " {}";
         };
@@ -38,17 +40,19 @@
             "10" = "0 <span font='Font Awesome 5 Free 14'>\uf1b6</span>";
           };
         };
-        tray = {
-          icon-size = 20;
-          spacing = 8;
-        };
         "sway/window" = {
           max-length = 60;
           tooltip = false;
         };
+
+        # --- Info ---
         clock = {
           format = "{:%a %d %b - %H:%M}";
           tooltip = false;
+        };
+        tray = {
+          icon-size = 20;
+          spacing = 8;
         };
         cpu = {
           interval = 5;
@@ -60,24 +64,16 @@
           format = "<span font='Font Awesome 5 Free 9'>\ufe01</span> {used:0.1f}G/{total:0.1f}G";
           tooltip = false;
         };
-        "custom/powermenu" = {
-          return-type = "json";
-          exec = "~/.config/waybar/modules/powermenu.sh";
-          format = "<span font='Font Awesome 5 Free 9'>{icon}</span>  {}";
-          format-icons = [ "\uf011" ];
-          interval = 3600;
-          escape = true;
-          on-click = "~/.config/wofi/wofi-power.sh";
-        };
-        "custom/recorder" = {
-          format = "!";
-          return-type = "json";
-          interval = 3;
-          exec = "echo '{\"class\": \"recording\"}'";
-          exec-if = "pgrep wf-recorder";
+        temperature = {
+          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+          critical-threshold = 75;
+          interval = 5;
+          format = "{icon} {temperatureC}\u00b0";
           tooltip = false;
-          on-click = "killall -s SIGINT wf-recorder";
+          format-icons = [ "\uf2cb" "\uf2c9" "\uf2c7" "\uf2c5" "\uf2c3" ];
         };
+
+        # --- Hardware ---
         battery = {
           format = "<span font='Font Awesome 5 Free 11'>{icon}</span> {capacity}%{time}";
           format-icons = [ "\uf244" "\uf243" "\uf242" "\uf241" "\uf240" ];
@@ -121,13 +117,25 @@
           on-scroll-up = "light -A 1";
           on-scroll-down = "light -U 1";
         };
-        temperature = {
-          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
-          critical-threshold = 75;
-          interval = 5;
-          format = "{icon} {temperatureC}\u00b0";
+
+        # --- Custom ---
+        "custom/powermenu" = {
+          return-type = "json";
+          exec = "~/.config/waybar/modules/powermenu.sh";
+          format = "<span font='Font Awesome 5 Free 9'>{icon}</span>  {}";
+          format-icons = [ "\uf011" ];
+          interval = 3600;
+          escape = true;
+          on-click = "~/.config/wofi/wofi-power.sh";
+        };
+        "custom/recorder" = {
+          format = "!";
+          return-type = "json";
+          interval = 3;
+          exec = "echo '{\"class\": \"recording\"}'";
+          exec-if = "pgrep wf-recorder";
           tooltip = false;
-          format-icons = [ "\uf2cb" "\uf2c9" "\uf2c7" "\uf2c5" "\uf2c3" ];
+          on-click = "killall -s SIGINT wf-recorder";
         };
       };
     };
