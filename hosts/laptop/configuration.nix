@@ -50,6 +50,11 @@
 
   # --- Fingerprint ---
   services.fprintd.enable = true;
+  security.pam.services = {
+    sudo.fprintAuth = true;
+    swaylock.fprintAuth = true;
+    login.fprintAuth = true;
+  };
 
   # --- Firmware ---
   services.fwupd.enable = true;

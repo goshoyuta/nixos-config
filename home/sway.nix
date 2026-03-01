@@ -152,6 +152,9 @@ in
         "Henkan_Mode" = "exec fcitx5-remote -o";
         "Muhenkan" = "exec fcitx5-remote -c";
 
+        # lock
+        "${mod}+Shift+x" = "exec swaylock -f";
+
         # system
         "${mod}+Shift+q" = "exec shutdown -h now";
         "${mod}+Shift+b" = "exec bluetoothctl connect 70:5A:6F:62:A9:D1";
@@ -181,6 +184,7 @@ in
         { command = "wl-paste --watch cliphist store"; }
         { command = ''swaymsg "workspace 1; exec foot;"''; }
         { command = ''swaymsg "workspace 2; exec brave;"''; }
+        { command = ''swayidle -w timeout 300 "swaylock -f" timeout 600 "swaymsg 'output * dpms off'" resume "swaymsg 'output * dpms on'" before-sleep "swaylock -f"''; }
       ];
     };
 

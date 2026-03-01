@@ -11,6 +11,7 @@
     ./home/claude.nix
     ./home/neomutt.nix
   ] ++ lib.optionals isDesktop [
+    ./home/fcitx5.nix
     ./home/sway.nix
     ./home/waybar.nix
     ./home/foot.nix
