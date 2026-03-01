@@ -10,17 +10,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # --- Outputs ---
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, ... }:
     let
       system = "x86_64-linux";
       mkHost = { hostDir, extraModules ? [ ], isDesktop }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit isDesktop;
+            inherit isDesktop agenix;
             pkgs-unstable = import nixpkgs-unstable {
               inherit system;
               config.allowUnfree = true;
@@ -29,6 +33,7 @@
           modules = [
             hostDir
             home-manager.nixosModules.home-manager
+            agenix.nixosModules.default
           ] ++ extraModules;
         };
     in

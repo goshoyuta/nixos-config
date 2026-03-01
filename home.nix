@@ -27,6 +27,14 @@
   home.homeDirectory = "/home/yg";
   home.stateVersion = "24.11";
 
+  # --- Cursor ---
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+  };
+
   # --- Packages ---
   home.packages = with pkgs; [
     eza fd duckdb trash-cli uv bun

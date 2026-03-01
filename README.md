@@ -5,7 +5,7 @@ ThinkPad X1 Carbon (7th Gen) と Vultr VPS 向けの NixOS + Home Manager 設定
 ## 構成
 
 ```
-flake.nix              # エントリーポイント (nixpkgs, home-manager, nixos-hardware, agenix)
+flake.nix              # エントリーポイント (nixpkgs, home-manager, nixos-hardware)
 common/                # 共通設定 (ロケール, CLI ツール, ユーザー)
 modules/
   desktop.nix          # デスクトップ向けパッケージ・フォント
@@ -16,7 +16,6 @@ hosts/
 home/                  # Home Manager モジュール (fish, sway, nvim, tmux, git ...)
 home.nix               # Home Manager エントリーポイント
 dotfiles/              # xdg.configFile で配置する生ファイル
-secrets/               # agenix 暗号化シークレット (.age) と鍵定義
 ```
 
 ## Arch Linux からの移行準備
@@ -48,57 +47,6 @@ cp -r ~/.gnupg ~/backup/
 - Espanso のユーザースニペット (`~/.config/espanso/match/packages/`)
 - その他 `.gitignore` で除外しているファイル
 
-### シークレットの作成 (NixOS インストール前に実施)
-
-NixOS の設定が `.age` ファイルを参照しているため、`nixos-install` の前に作成してコミットしておく必要がある。
-
-#### 1. Arch 環境に nix をインストール
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
-
-インストール後、**新しいターミナルを開く**か、fish の場合は以下を実行:
-
-```fish
-fish_add_path /nix/var/nix/profiles/default/bin
-```
-
-#### 2. agenix と mkpasswd を取得
-
-`agenix` は nixpkgs には含まれていないので、GitHub の flake から直接取得する。
-`mkpasswd` は nixpkgs の独立パッケージ。
-
-```bash
-nix shell github:ryantm/agenix nixpkgs#mkpasswd
-```
-
-#### 3. secrets/ ディレクトリ内で .age ファイルを作成
-
-`agenix` は同じディレクトリの `secrets.nix` を読むので、**必ず `secrets/` に移動してから**実行する。
-
-```bash
-cd secrets
-
-# --- user-password.age ---
-# パスワードハッシュを生成して、パイプで agenix に渡す
-mkpasswd -m sha-512 "実際のパスワード" | agenix -e user-password.age -i ~/.ssh/id_ed25519
-
-# --- espanso-base.age ---
-# 既存の base.yml をそのまま暗号化
-cat ~/.config/espanso/match/base.yml | agenix -e espanso-base.age -i ~/.ssh/id_ed25519
-```
-
-> **ポイント**: `agenix -e` はそのままだとエディタが開くが、パイプで内容を渡せばエディタなしで作成できる。
-
-#### 4. コミット
-
-```bash
-cd ..
-git add secrets/*.age
-git commit -m "Add encrypted secrets"
-```
-
 ### NixOS インストール USB の作成
 
 1. [NixOS 公式ダウンロードページ](https://nixos.org/download/) から Minimal ISO (x86_64) をダウンロード
@@ -127,25 +75,28 @@ sync
 ### 1. USB ブート & WiFi 接続
 
 ```bash
-sudo systemctl start wpa_supplicant
-wpa_cli
-> add_network 0
-> set_network 0 ssid "SSID名"
-> set_network 0 psk "パスワード"
-> enable_network 0
-> quit
+# nmtui (CUI の Wi-Fi 設定ツール) で接続する
+nmtui
+# 「Activate a connection」→ SSID 選択 → パスワード入力
+
+# 接続確認
+ping -c 3 google.com
 ```
 
 ### 2. パーティション作成
 
+> ⚠️ ESP (boot) が p1、root が p2 になる順序で作成すること
+
 ```bash
 parted /dev/nvme0n1 -- mklabel gpt
-parted /dev/nvme0n1 -- mkpart root ext4 512MB 100%
-parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
-parted /dev/nvme0n1 -- set 2 esp on
+# 1. EFI System Partition (p1: boot)
+parted /dev/nvme0n1 -- mkpart ESP fat32 1MiB 512MiB
+parted /dev/nvme0n1 -- set 1 esp on
+# 2. Root partition (p2: nixos)
+parted /dev/nvme0n1 -- mkpart root ext4 512MiB 100%
 
-mkfs.ext4 -L nixos /dev/nvme0n1p1
-mkfs.fat -F 32 -n boot /dev/nvme0n1p2
+mkfs.fat -F 32 -n boot /dev/nvme0n1p1
+mkfs.ext4 -L nixos /dev/nvme0n1p2
 
 mount /dev/disk/by-label/nixos /mnt
 mkdir -p /mnt/boot
@@ -156,29 +107,48 @@ mount /dev/disk/by-label/boot /mnt/boot
 
 ```bash
 nixos-generate-config --root /mnt
-# 生成された /mnt/etc/nixos/hardware-configuration.nix の内容を確認しておく
+# 生成された /mnt/etc/nixos/hardware-configuration.nix の
+# fileSystems / swapDevices を次のステップで使う
 ```
 
-### 4. リポジトリをクローン & インストール
+### 4. リポジトリをクローン
 
 ```bash
-nix-env -iA nixos.git
-git clone https://github.com/goshoyuta/nixos-config /mnt/etc/nixos
+# git は最初から入っていないので nix-shell で一時取得する
+nix-shell -p git
 
-# Step 3 で生成された hardware-configuration.nix の fileSystems / swapDevices を
-# hosts/laptop/hardware.nix に反映する
-vim /mnt/etc/nixos/hosts/laptop/hardware.nix
+sudo mkdir -p /mnt/etc/nixos
+cd /mnt/etc/nixos
+sudo git clone https://github.com/goshoyuta/nixos-config .
 
-nixos-install --flake /mnt/etc/nixos#x1carbon
+# Step 3 で生成された fileSystems / swapDevices を hosts/laptop/hardware.nix に反映する
+# (UUID はこの PC 固有の値になるので必ず上書きする)
+sudo vim /mnt/etc/nixos/hosts/laptop/hardware.nix
+
+# Flakes はGit管理外のファイルを無視するので必ず add する
+sudo git add .
+```
+
+### 5. インストール実行
+
+```bash
+cd /mnt/etc/nixos
+sudo git add .
+
+sudo nixos-install --flake .#x1carbon
 reboot
 ```
 
-### 5. 再起動後
+### 6. 再起動後の設定
+
+**root ユーザー**でログインして以下を実行する。
 
 ```bash
-# 設定変更の適用
-sudo nixos-rebuild switch --flake /etc/nixos#x1carbon
+# 一般ユーザーのパスワードを設定
+passwd yg
 ```
+
+その後 `exit` して `yg` ユーザーでログインする。
 
 ## 日常の使い方
 
@@ -220,72 +190,6 @@ fprintd-delete yg
 - `sudo` 実行時
 - swaylock（画面ロック）の解除時
 - ログイン時
-
-## シークレット管理 (agenix)
-
-パスワードや個人スニペットなどの機密情報は [agenix](https://github.com/ryantm/agenix) で暗号化してリポジトリに保存している。
-復号には SSH 秘密鍵が必要で、`nixos-rebuild switch` 時に `/run/agenix/` 以下に自動復号される。
-
-### 仕組み
-
-```
-secrets/
-  secrets.nix          # 「どの公開鍵で暗号化するか」の定義
-  user-password.age    # 暗号化されたパスワードハッシュ
-  espanso-base.age     # 暗号化された Espanso スニペット
-```
-
-- `secrets.nix` — 暗号化に使う公開鍵と、対象ファイルの対応を定義
-- `.age` ファイル — `age` で暗号化されたデータ。Git にコミットしても安全
-- 復号は NixOS 起動時に SSH 秘密鍵（ユーザー鍵 or ホスト鍵）を使って自動的に行われる
-
-### 管理対象
-
-| ファイル | 内容 | 復号先 | 対象ホスト |
-|---------|------|--------|-----------|
-| `secrets/user-password.age` | yg ユーザーのパスワードハッシュ | `/run/agenix/user-password` | 全ホスト |
-| `secrets/espanso-base.age` | Espanso 個人スニペット (base.yml) | `/run/agenix/espanso-base` | laptop のみ |
-
-### シークレットの編集
-
-NixOS 上では `agenix` がシステムパッケージに入っているので直接使える。
-
-```bash
-cd /etc/nixos/secrets
-
-# パスワード変更
-mkpasswd -m sha-512 "新しいパスワード" | agenix -e user-password.age
-
-# Espanso スニペット編集 (エディタが開く)
-agenix -e espanso-base.age
-
-# 反映
-sudo nixos-rebuild switch --flake /etc/nixos#x1carbon
-```
-
-NixOS 以外の環境（Arch 等）から編集する場合:
-
-```bash
-nix shell github:ryantm/agenix
-cd secrets
-agenix -e user-password.age -i ~/.ssh/id_ed25519
-```
-
-### ホスト鍵の追加
-
-新しいマシンでもシークレットを復号できるようにするには、そのマシンの SSH ホスト鍵を `secrets/secrets.nix` に追加する。
-
-```bash
-# 1. マシン上でホスト鍵を取得
-ssh-keyscan localhost 2>/dev/null | grep ed25519
-
-# 2. secrets/secrets.nix の publicKeys にホスト鍵を追加
-vim secrets/secrets.nix
-
-# 3. 新しい鍵で再暗号化
-cd secrets
-agenix --rekey -i ~/.ssh/id_ed25519
-```
 
 ## nixos-hardware
 

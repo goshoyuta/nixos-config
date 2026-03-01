@@ -16,6 +16,14 @@ modmap:
         held: F24
 
 keymap:
+  - name: Double Escape to disable IME
+    remap:
+      Esc:
+        remap:
+          Esc: {launch: ["fcitx5-remote", "-c"]}
+        timeout_key: Esc
+        timeout_millis: 500
+
   - name: Global
     remap:
       F23-K: Up

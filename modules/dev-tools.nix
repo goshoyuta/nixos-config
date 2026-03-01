@@ -8,6 +8,7 @@
   environment.systemPackages = with pkgs; [
     # dev core
     pkgs-unstable.claude-code
+    (callPackage ../packages/kilocode-cli.nix {})
     binutils gnumake gcc autoconf automake libtool patch m4 bison flex pkg-config
 
     # languages & runtimes
