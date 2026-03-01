@@ -89,6 +89,8 @@ in
 
       # --- Keybindings ---
       keybindings = lib.mkOptionDefault {
+        # nixos-rebuild switch --flake .
+        "${mod}+n" = "exec sh -c 'sudo nixos-rebuild switch --flake $(ghq root)/github.com/goshoyuta/nixos-config'";
         # app launch
         "${mod}+Return" = "exec foot";
         "${mod}+space" = "exec ${menu}";
@@ -146,7 +148,7 @@ in
         "${mod}+Shift+f" = "exec grimshot --notify copy screen";
 
         # clipboard (cliphist)
-        "${mod}+v" = "exec cliphist list | wofi --show dmenu -G insensitive=true | cliphist decode | wl-copy";
+        "${mod}+v" = "exec sh -c 'cliphist list | wofi --show dmenu -G insensitive=true | cliphist decode | wl-copy'";
 
         # IME
         "Henkan_Mode" = "exec fcitx5-remote -o";
