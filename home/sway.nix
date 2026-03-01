@@ -155,6 +155,7 @@ in
         # system
         "${mod}+Shift+q" = "exec shutdown -h now";
         "${mod}+Shift+b" = "exec bluetoothctl connect 70:5A:6F:62:A9:D1";
+        "${mod}+Shift+n" = ''exec nmcli device wifi connect "Pixel_6859" password "jn95vj7qt386czp"'';
         "${mod}+Shift+9" = "exec swaymsg 'seat seat0 hide_cursor 0'";
         "${mod}+Shift+0" = "exec swaymsg 'seat seat0 hide_cursor 1000'";
       };
