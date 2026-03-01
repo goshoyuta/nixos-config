@@ -3,7 +3,7 @@
 {
   users.users.yg = {
     isNormalUser = true;
-    hashedPassword = "$y$j9T$example$placeholder";  # TODO: set actual hashed password
+    initialPassword = "gy";
     extraGroups = [ "wheel" "docker" "video" "networkmanager" "input" "uinput" ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [

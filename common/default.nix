@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-unstable, lib, isDesktop, ... }:
+{ config, pkgs, pkgs-unstable, lib, isDesktop, agenix, ... }:
 
 {
   imports = [ ./users.nix ];
@@ -39,6 +39,8 @@
   # --- Packages ---
   environment.systemPackages = with pkgs; [
     vim bash git github-cli
+    age
+    agenix.packages.${pkgs.system}.default
     curl wget aria2 rsync rclone
     htop bottom procs duf dust gdu
     fzf ripgrep fd bat jq tealdeer glow pandoc
