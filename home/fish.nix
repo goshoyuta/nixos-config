@@ -110,8 +110,8 @@
       # tmux auto-start
       if not set -q TMUX
           if command -v tmux >/dev/null 2>&1
-              if tmux has-session -t default 2>/dev/null
-                  tmux attach-session -t default
+              if tmux has-session 2>/dev/null
+                  tmux attach-session
               else
                   tmux new-session -s default
               end
