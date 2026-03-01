@@ -191,6 +191,27 @@ fprintd-delete yg
 - swaylock（画面ロック）の解除時
 - ログイン時
 
+## Espanso スニペットの管理
+
+`secrets/espanso-base.age` に age で暗号化して保存している。
+`nixos-rebuild switch` 時に Home Manager が自動復号して `~/.config/espanso/match/base.yml` に配置する。
+
+### 更新手順
+
+```bash
+# 現在の base.yml を暗号化して上書き
+age -e -r "$(cat ~/.ssh/id_ed25519.pub)" \
+  -o ~/ghq/github.com/goshoyuta/nixos-config/secrets/espanso-base.age \
+  ~/.config/espanso/match/base.yml
+
+# コミット
+cd ~/ghq/github.com/goshoyuta/nixos-config
+git add secrets/espanso-base.age
+git commit -m "Update espanso-base"
+```
+
+次の `nixos-rebuild switch` で自動反映される。
+
 ## nixos-hardware
 
 [nixos-hardware](https://github.com/NixOS/nixos-hardware) で以下が自動設定されます:
