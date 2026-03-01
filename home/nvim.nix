@@ -13,9 +13,5 @@
       source = ../dotfiles/nvim/lua;
       recursive = true;
     };
-    "nvim/snippets" = {
-      source = ../dotfiles/nvim/snippets;
-      recursive = true;
-    };
   };
 }
