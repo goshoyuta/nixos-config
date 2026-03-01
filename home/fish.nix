@@ -44,12 +44,12 @@
       gl = "git log";
 
       # config editing
-      ".f" = "cd ~/.config/fish/ && nvim";
-      ".v" = "cd ~/.config/nvim/ && nvim";
-      ".c" = "cd ~/.config/";
-      ".a" = "nvim ~/.config/alacritty/alacritty.yml";
-      ".t" = "nvim ~/.config/tmux/tmux.conf";
-      ".s" = "nvim ~/.config/sway/config";
+      ".fi" = "cd (ghq root)/github.com/goshoyuta/nixos-config/home && nvim fish.nix";
+      ".v" = "cd (ghq root)/github.com/goshoyuta/nixos-config/home && nvim nvim.nix";
+      ".c" = "cd (ghq root)/github.com/goshoyuta/nixos-config";
+      ".fo" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/foot.nix";
+      ".t" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/tmux.nix";
+      ".s" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/sway.nix";
 
       # misc
       v = "nvim";
