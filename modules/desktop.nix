@@ -20,5 +20,7 @@
   fonts.packages = with pkgs; [
     mplus-outline-fonts.githubRelease
     noto-fonts-cjk-sans
+    font-awesome
+    (callPackage ../packages/cica.nix {})
   ];
 }
