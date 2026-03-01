@@ -29,7 +29,7 @@
 
   # --- Packages ---
   home.packages = with pkgs; [
-    eza fd duckdb trash-cli uv
+    eza fd duckdb trash-cli uv bun
   ] ++ lib.optionals isDesktop [
     brave wl-clipboard wofi
     sway-contrib.grimshot grim slurp xsel

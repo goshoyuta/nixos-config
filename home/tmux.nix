@@ -53,6 +53,8 @@
       # session
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
+      bind -r ( switch-client -p
+      bind -r ) switch-client -n
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"
@@ -96,7 +98,8 @@
 
       # status line
       set -g status-style fg=white,bg=colour235
-      set -g status-left '#{prefix_highlight}'
+      set -g status-left '#{prefix_highlight}#[fg=white,bold] #S '
+      set -g status-left-length 40
       set -g status-right ""
       setw -g window-status-format "#W"
       setw -g window-status-current-format "#W"

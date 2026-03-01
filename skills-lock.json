@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "skills": {
+    "find-skills": {
+      "source": "haha0815/claude-meta-skills",
+      "sourceType": "github",
+      "computedHash": "6412eb4eb3b91595ebab937f0c69501240e7ba761b3d82510b5cf506ec5c7adc"
+    },
+    "ideation": {
+      "source": "haha0815/claude-meta-skills",
+      "sourceType": "github",
+      "computedHash": "27063d87f8f3b7fc16d8942ba4b898d20b6c902938c73dbe1724305d0c4eda96"
+    },
+    "skill-auditor": {
+      "source": "haha0815/claude-meta-skills",
+      "sourceType": "github",
+      "computedHash": "5793c44c2a0b2babb3e4e6060e682e42bb218084df8caa678c29e92a4de811ad"
+    },
+    "skills-updater": {
+      "source": "haha0815/claude-meta-skills",
+      "sourceType": "github",
+      "computedHash": "fc20eafb42d8ba32e5a5f2e41e1dfcdf4040a147968461db93d0699eb9cf90a5"
+    },
+    "skillshare": {
+      "source": "haha0815/claude-meta-skills",
+      "sourceType": "github",
+      "computedHash": "3a312daea9b213694aeeaa46f44e8742f66d81e92859b31a02a40f9594ee6a18"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f98931159fa9c7fed043bcd18a891a46dcf89ababa38df13a4c5b7b30dc0ce07"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "4365be772fd3b41994a72ad478472c6d680678e7f3859860ab010e9c46e48ee0"
+    },
+    "vercel-react-native-skills": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "2e9088a7333666d8c2833b8ff58bd51b955501c42b4c7244f72b4cbf22dafcc4"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+    }
+  }
+}
