@@ -54,16 +54,5 @@
   # --- Firmware ---
   services.fwupd.enable = true;
 
-  # --- Secrets ---
-  age.secrets.espanso-base = {
-    file = ../../secrets/espanso-base.age;
-    owner = "yg";
-  };
-  age.secrets.env-local-kouro = {
-    file = ../../secrets/env-local-kouro.age;
-    owner = "yg";
-    path = "/home/yg/ghq/github.com/fiveinc/kouro.info/.env.local";
-  };
-
   system.stateVersion = "24.11";
 }

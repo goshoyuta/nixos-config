@@ -3,7 +3,7 @@
 {
   users.users.yg = {
     isNormalUser = true;
-    hashedPasswordFile = config.age.secrets.user-password.path;
+    hashedPassword = "$y$j9T$example$placeholder";  # TODO: set actual hashed password
     extraGroups = [ "wheel" "docker" "video" "networkmanager" ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [

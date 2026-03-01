@@ -1,12 +1,9 @@
-{ config, pkgs, lib, isDesktop, agenix, ... }:
+{ config, pkgs, lib, isDesktop, ... }:
 
 {
   imports = [ ./users.nix ];
 
   nixpkgs.config.allowUnfree = true;
-
-  # --- Secrets (agenix) ---
-  age.secrets.user-password.file = ../secrets/user-password.age;
 
   # --- System ---
   boot.tmp.cleanOnBoot = true;
@@ -27,7 +24,6 @@
   # --- Packages ---
   environment.systemPackages = with pkgs; [
     vim bash git github-cli
-    agenix.packages.${pkgs.system}.default
     curl wget aria2 rsync rclone
     htop bottom procs duf dust gdu
     fzf ripgrep fd bat jq tealdeer glow pandoc
