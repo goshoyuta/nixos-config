@@ -20,6 +20,7 @@
     ./home/copyq.nix
     ./home/espanso.nix
     ./home/swaylock.nix
+    ./home/mako.nix
   ];
 
   # --- User ---

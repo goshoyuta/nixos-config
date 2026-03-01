@@ -44,7 +44,7 @@
       gl = "git log";
 
       # claude
-      cc = "claude --dangerously-skip-permissions"
+      cc = "claude --dangerously-skip-permissions";
 
       # config editing
       ".fi" = "cd (ghq root)/github.com/goshoyuta/nixos-config/home && nvim fish.nix";

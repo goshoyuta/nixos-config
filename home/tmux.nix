@@ -78,8 +78,18 @@
       # session
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
-      bind -n M-9 switch-client -p
-      bind -n M-0 switch-client -n
+      bind -n M-[ switch-client -p
+      bind -n M-] switch-client -n
+      bind -n M-0 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "1p")" 2>/dev/null'
+      bind -n M-1 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "2p")" 2>/dev/null'
+      bind -n M-2 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "3p")" 2>/dev/null'
+      bind -n M-3 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "4p")" 2>/dev/null'
+      bind -n M-4 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "5p")" 2>/dev/null'
+      bind -n M-5 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "6p")" 2>/dev/null'
+      bind -n M-6 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "7p")" 2>/dev/null'
+      bind -n M-7 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "8p")" 2>/dev/null'
+      bind -n M-8 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "9p")" 2>/dev/null'
+      bind -n M-9 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "10p")" 2>/dev/null'
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"
