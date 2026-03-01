@@ -63,11 +63,23 @@
       bind -n C-S-Right swap-window -t +1
       bind c new-window -c '#{pane_current_path}'
 
+      # disable window number selection (1-9)
+      unbind 1
+      unbind 2
+      unbind 3
+      unbind 4
+      unbind 5
+      unbind 6
+      unbind 7
+      unbind 8
+      unbind 9
+      unbind 0
+
       # session
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
-      bind -r 9 switch-client -p
-      bind -r 0 switch-client -n
+      bind -n M-9 switch-client -p
+      bind -n M-0 switch-client -n
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"

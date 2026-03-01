@@ -1,8 +1,13 @@
 { ... }:
 
 {
+  xdg.configFile."fcitx5/config".text = ''
+    [Hotkey]
+    DeactivateKeys=Escape
+  '';
+
   xdg.configFile."fcitx5/conf/classicui.conf".text = ''
-    Font=Noto Sans CJK JP 16
+    Font=Noto Sans CJK JP 14
   '';
 
   xdg.configFile."fcitx5/profile".text = ''
