@@ -90,7 +90,7 @@ in
       # --- Keybindings ---
       keybindings = lib.mkOptionDefault {
         # nixos-rebuild switch --flake .
-        "${mod}+n" = "exec foot -e sh -c 'sudo nixos-rebuild switch --flake $(ghq root)/github.com/goshoyuta/nixos-config; echo \"--- 完了 --- Enterで閉じる\"; read'";
+        "${mod}+n" = "exec foot -e sh -c 'sudo nixos-rebuild switch --flake $(ghq root)/github.com/goshoyuta/nixos-config; echo \"--- Finished. --- Enter to close\"; read'";
         # app launch
         "${mod}+Return" = "exec foot";
         "${mod}+space" = "exec ${menu}";

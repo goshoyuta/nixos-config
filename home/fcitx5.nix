@@ -1,6 +1,10 @@
 { ... }:
 
 {
+  xdg.configFile."fcitx5/conf/classicui.conf".text = ''
+    Font=Sans 16
+  '';
+
   xdg.configFile."fcitx5/profile".text = ''
     [Groups/0]
     # Group Name
