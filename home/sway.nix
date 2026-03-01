@@ -84,7 +84,10 @@ in
       };
 
       seat = {
-        "*" = { hide_cursor = "1000"; };
+        "*" = {
+          hide_cursor = "1000";
+          xcursor_theme = "Adwaita 24";
+        };
       };
 
       # --- Keybindings ---
