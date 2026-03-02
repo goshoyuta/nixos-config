@@ -120,7 +120,8 @@
               if tmux has-session 2>/dev/null
                   tmux attach-session
               else
-                  tmux new-session -s default
+                  read -P "New session name: " -l session_name
+                  tmux new-session -s "$session_name"
               end
           end
       end
