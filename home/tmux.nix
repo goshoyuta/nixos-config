@@ -98,34 +98,28 @@
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
 
-      # --- Style ---
+      # --- Style (Tokyo Night) ---
       set -g allow-rename on
       set -g renumber-windows on
       set -g status-position top
 
       # pane border
-      set -g pane-border-style fg=colour238
-      set -g pane-active-border-style fg=colour23
+      set -g pane-border-style "fg=#414868"
+      set -g pane-active-border-style "fg=#7aa2f7"
 
       # focus (background color)
-      setw -g window-active-style bg=terminal
-      setw -g window-style bg=colour234
+      setw -g window-active-style "bg=terminal"
+      setw -g window-style "bg=#16161e"
 
       # status line - 2段表示: セッション(上) / ウィンドウ(下)
       set -g status 2
-      set -g status-style fg=white,bg=colour235
+      set -g status-style "fg=#c0caf5,bg=#1a1b26"
 
-      # 上段: REMOTE表示 or セッション名 (中央揃え) + prefix表示 (右)
-      set -g status-format[0] "#[bg=colour235]#[align=centre]#{?#{==:#{client_key_table},off},#[bg=yellow]#[fg=black]#[bold] REMOTE #[default],#[bg=colour24]#[fg=colour255]#[bold] #S #[default]}#[align=right]#{?client_prefix,#[bg=colour196,fg=colour255,bold] PREFIX #[default], } "
+      # 上段: PREFIX (左・固定幅) + REMOTE/セッション名 (中央)
+      set -g status-format[0] "#[bg=#1a1b26]#{?client_prefix,#[bg=#f7768e]#[fg=#1a1b26]#[bold] PREFIX #[bg=#1a1b26]#[fg=#c0caf5]#[nobold],        }#[align=centre]#{?#{==:#{client_key_table},off},#[bg=#e0af68]#[fg=#1a1b26]#[bold] REMOTE #[default],#[bg=#7aa2f7]#[fg=#1a1b26]#[bold] #S #[default]}"
 
-      # ウィンドウ表示スタイル
-      setw -g window-status-format "#[fg=colour242,bg=colour235] #W "
-      setw -g window-status-current-format "#[fg=colour255,bg=colour238,bold] #W #[default]"
-      set -g window-status-style fg=colour242,bg=colour235
-      set -g window-status-current-style fg=colour255,bg=colour238,bold
-
-      # 下段: ウィンドウ一覧 (中央揃え)
-      set -g status-format[1] "#[align=centre]#{W:#[fg=colour242]#[bg=colour235] #W ,#[fg=colour255]#[bg=colour238]#[bold] #W #[default]}"
+      # 下段: ウィンドウ一覧 (中央)
+      set -g status-format[1] "#[bg=#1a1b26]#[align=centre]#{W:#[fg=#565f89]#[bg=#1a1b26] #W ,#[fg=#7aa2f7]#[bg=#24283b]#[bold] #W #[default]}"
     '';
   };
 }
