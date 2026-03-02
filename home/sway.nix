@@ -3,6 +3,18 @@
 let
   mod = "Mod4";
   menu = "wofi -G --show drun insensitive=true width=70% height=70% | xargs swaymsg exec --";
+  toggleDim = pkgs.writeShellScript "toggle-dim" ''
+    STATE="/tmp/.display_dim"
+    if [ -f "$STATE" ]; then
+      SAVED=$(cat "$STATE")
+      rm "$STATE"
+      ${pkgs.brightnessctl}/bin/brightnessctl set "$SAVED"
+    else
+      CURRENT=$(${pkgs.brightnessctl}/bin/brightnessctl get)
+      echo "$CURRENT" > "$STATE"
+      ${pkgs.brightnessctl}/bin/brightnessctl set 1
+    fi
+  '';
 in
 {
   wayland.windowManager.sway = {
@@ -93,7 +105,7 @@ in
       # --- Keybindings ---
       keybindings = lib.mkOptionDefault {
         # nixos rebuild
-        "${mod}+n" = "exec sh -c 'notify-send \"nixos-rebuild\" \"Build started...\"; OUTPUT=$(sudo nixos-rebuild switch --flake $(ghq root)/github.com/goshoyuta/nixos-config 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send \"nixos-rebuild succeeded\"; fi'";
+        "${mod}+n" = "exec sh -c 'notify-send \"nixos-rebuild\" \"Build started...\"; OUTPUT=$(sudo nixos-rebuild switch --fast --flake $(ghq root)/github.com/goshoyuta/nixos-config 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send \"nixos-rebuild succeeded\"; fi'";
         # app launch
         "${mod}+Return" = "exec ghostty";
         "${mod}+space" = "exec ${menu}";
@@ -140,6 +152,7 @@ in
         "XF86AudioMicMute" = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
         "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
         "XF86MonBrightnessUp" = "exec brightnessctl set 5%+";
+        "${mod}+d" = "exec ${toggleDim}";
         "XF86AudioPlay" = "exec playerctl play-pause";
         "XF86AudioNext" = "exec playerctl next";
         "XF86AudioPrev" = "exec playerctl previous";

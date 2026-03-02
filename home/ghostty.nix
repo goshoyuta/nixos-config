@@ -8,6 +8,9 @@
       font-family = "Cica";
       font-size = 18;
 
+      # --- Keybindings ---
+      keybind = [];
+
       # --- Colors (Tokyo Night) ---
       background = "1a1b26";
       foreground = "c0caf5";

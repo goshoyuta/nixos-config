@@ -67,5 +67,8 @@
   # --- Firmware ---
   services.fwupd.enable = true;
 
+  # --- OOM Killer ---
+  services.earlyoom.enable = true;
+
   system.stateVersion = "24.11";
 }

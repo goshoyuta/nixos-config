@@ -94,6 +94,10 @@
 
       # IME off before copy mode (fcitx5)
       bind Space run-shell "fcitx5-remote -c" \; copy-mode
+      bind -n M-k run-shell "fcitx5-remote -c" \; copy-mode
+
+      # URL picker popup (foot-like link hints)
+      bind -n M-f display-popup -E "tmux capture-pane -J -p | grep -oE 'https?://[^[:space:]]+' | sort -u | fzf --prompt='URL> ' | xargs -r xdg-open"
 
       # --- Copy Mode (vi) ---
       bind -T copy-mode-vi Escape send -X cancel
