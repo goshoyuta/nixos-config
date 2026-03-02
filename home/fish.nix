@@ -161,10 +161,13 @@
       };
 
       _tm_fzf_switch = {
-        description = "gum session switcher (called inside tmux popup)";
+        description = "fzf session switcher (called inside tmux popup)";
         body = ''
           set -l session (tmux list-sessions -F "#{session_name}" | \
-              gum filter --select-if-one --placeholder "session...")
+              fzf --exit-0 --select-1 \
+                  --preview 'tmux list-windows -t {}' \
+                  --bind 'change:first' \
+                  --bind 'result:transform:[ $FZF_MATCH_COUNT -eq 1 ] && echo accept')
           if test -n "$session"
               tmux switch-client -t "$session"
           end

@@ -51,13 +51,11 @@
       bind -T root F12 \
         set key-table off \;\
         set status-style "fg=colour235,bg=colour238" \;\
-        set status-left "#[fg=black,bg=yellow,bold] REMOTE #[default] " \;\
         refresh-client -S
 
       bind -T off F12 \
         set -u key-table \;\
         set -u status-style \;\
-        set -u status-left \;\
         refresh-client -S
 
       # --- Keybindings ---
@@ -117,8 +115,8 @@
       set -g status 2
       set -g status-style fg=white,bg=colour235
 
-      # 上段: セッション名 (シアン背景・中央揃え)
-      set -g status-format[0] "#[bg=colour24,fg=colour255,bold]#[align=centre] #S "
+      # 上段: REMOTE表示 or セッション名 (中央揃え) + prefix表示 (右)
+      set -g status-format[0] "#[bg=colour235]#[align=centre]#{?#{==:#{client_key_table},off},#[bg=yellow]#[fg=black]#[bold] REMOTE #[default],#[bg=colour24]#[fg=colour255]#[bold] #S #[default]}#[align=right]#{?client_prefix,#[bg=colour196,fg=colour255,bold] PREFIX #[default], } "
 
       # ウィンドウ表示スタイル
       setw -g window-status-format "#[fg=colour242,bg=colour235] #W "
