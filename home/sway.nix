@@ -86,7 +86,7 @@ in
       seat = {
         "*" = {
           hide_cursor = "1000";
-          # xcursor_theme = "Adwaita 24";
+          xcursor_theme = "Vanilla-DMZ 24";
         };
       };
 
@@ -185,11 +185,11 @@ in
       startup = [
         { command = "mako"; }
         { command = "fcitx5"; }
-        { command = "xremap ${config.xdg.configHome}/xremap/config.yml"; }
+        { command = "sh -c 'pgrep xremap || xremap ${config.xdg.configHome}/xremap/config.yml'"; }
         { command = "wl-paste --watch cliphist store"; }
         { command = ''swaymsg "workspace 1; exec foot;"''; }
-        { command = ''swaymsg "workspace 2; exec brave;"''; }
-        { command = ''swayidle -w timeout 300 "swaylock -f" timeout 600 "swaymsg 'output * dpms off'" resume "swaymsg 'output * dpms on'" before-sleep "swaylock -f"''; }
+        { command = ''swaymsg "workspace 2; exec brave --ozone-platform=wayland;"''; }
+        { command = ''swayidle -w timeout 3 "fcitx5-remote -c" timeout 300 "swaylock -f" timeout 600 "swaymsg 'output * dpms off'" resume "swaymsg 'output * dpms on'" before-sleep "swaylock -f"''; }
       ];
     };
 

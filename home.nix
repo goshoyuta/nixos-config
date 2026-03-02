@@ -32,10 +32,17 @@
   home.packages = with pkgs; [
     eza fd duckdb trash-cli uv bun
   ] ++ lib.optionals isDesktop [
-    brave wl-clipboard wofi cliphist
+    brave google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
     espanso-wayland font-manager
   ];
 
   programs.home-manager.enable = true;
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.vanilla-dmz;
+    name = "Vanilla-DMZ";
+    size = 24;
+  };
 }

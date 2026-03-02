@@ -2,6 +2,7 @@
 
 {
   home.file.".claude/CLAUDE.md".source = ../dotfiles/claude/CLAUDE.md;
+  home.file.".serena/serena_config.yml".source = ../dotfiles/serena/serena_config.yml;
 
   # --- MCPプラグイン (context7, claude-mem, frontend-design) ---
   home.activation.claudePlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

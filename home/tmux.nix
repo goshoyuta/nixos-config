@@ -40,7 +40,7 @@
       # --- Remote Mode (F12 toggle) ---
       bind -T root F12 \
         set key-table off \;\
-        set status-style "fg=colour245,bg=colour238" \;\
+        set status-style "fg=colour235,bg=colour238" \;\
         set status-left "#[fg=black,bg=yellow,bold] REMOTE #[default] " \;\
         refresh-client -S
 
@@ -63,33 +63,20 @@
       bind -n C-S-Right swap-window -t +1
       bind c new-window -c '#{pane_current_path}'
 
-      # disable window number selection (1-9)
-      unbind 1
-      unbind 2
-      unbind 3
-      unbind 4
-      unbind 5
-      unbind 6
-      unbind 7
-      unbind 8
-      unbind 9
-      unbind 0
-
       # session
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
-      bind -n M-[ switch-client -p
       bind -n M-] switch-client -n
-      bind -n M-0 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "1p")" 2>/dev/null'
-      bind -n M-1 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "2p")" 2>/dev/null'
-      bind -n M-2 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "3p")" 2>/dev/null'
-      bind -n M-3 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "4p")" 2>/dev/null'
-      bind -n M-4 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "5p")" 2>/dev/null'
-      bind -n M-5 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "6p")" 2>/dev/null'
-      bind -n M-6 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "7p")" 2>/dev/null'
-      bind -n M-7 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "8p")" 2>/dev/null'
-      bind -n M-8 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "9p")" 2>/dev/null'
-      bind -n M-9 run-shell 'tmux switch-client -t "$(tmux list-sessions -F "#S" | sed -n "10p")" 2>/dev/null'
+      bind -n M-0 run-shell 'tmux switch-client -t $(tmux ls | sed -n "1s/:.*//p")'
+      bind -n M-1 run-shell 'tmux switch-client -t $(tmux ls | sed -n "2s/:.*//p")'
+      bind -n M-2 run-shell 'tmux switch-client -t $(tmux ls | sed -n "3s/:.*//p")'
+      bind -n M-3 run-shell 'tmux switch-client -t $(tmux ls | sed -n "4s/:.*//p")'
+      bind -n M-4 run-shell 'tmux switch-client -t $(tmux ls | sed -n "5s/:.*//p")'
+      bind -n M-5 run-shell 'tmux switch-client -t $(tmux ls | sed -n "6s/:.*//p")'
+      bind -n M-6 run-shell 'tmux switch-client -t $(tmux ls | sed -n "7s/:.*//p")'
+      bind -n M-7 run-shell 'tmux switch-client -t $(tmux ls | sed -n "8s/:.*//p")'
+      bind -n M-8 run-shell 'tmux switch-client -t $(tmux ls | sed -n "9s/:.*//p")'
+      bind -n M-9 run-shell 'tmux switch-client -t $(tmux ls | sed -n "10s/:.*//p")'
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"
@@ -108,9 +95,10 @@
       bind -r C-l resize-pane -R 1
 
       # IME off before copy mode (fcitx5)
-      bind Enter run-shell "fcitx5-remote -c" \; copy-mode
+      bind Space run-shell "fcitx5-remote -c" \; copy-mode
 
       # --- Copy Mode (vi) ---
+      bind -T copy-mode-vi Escape send -X cancel
       bind -T copy-mode-vi v send -X begin-selection
       bind -T copy-mode-vi C-v send -X rectangle-toggle
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
@@ -120,25 +108,30 @@
       set -g allow-rename on
       set -g renumber-windows on
       set -g status-position top
-      set -g status-justify absolute-centre
 
       # pane border
-      set -g pane-border-style fg=colour240
-      set -g pane-active-border-style fg=colour240
+      set -g pane-border-style fg=colour238
+      set -g pane-active-border-style fg=colour23
 
       # focus (background color)
       setw -g window-active-style bg=terminal
       setw -g window-style bg=colour234
 
-      # status line
+      # status line - 2段表示: セッション(上) / ウィンドウ(下)
+      set -g status 2
       set -g status-style fg=white,bg=colour235
-      set -g status-left '#{prefix_highlight}#[fg=white,bold] #S '
-      set -g status-left-length 40
-      set -g status-right ""
-      setw -g window-status-format "#W"
-      setw -g window-status-current-format "#W"
-      set -g window-status-style fg=colour242
-      set -g window-status-current-style fg=white
+
+      # 上段: セッション名 (シアン背景・中央揃え)
+      set -g status-format[0] "#[bg=colour24,fg=colour255,bold]#[align=centre] #S "
+
+      # ウィンドウ表示スタイル
+      setw -g window-status-format "#[fg=colour242,bg=colour235] #W "
+      setw -g window-status-current-format "#[fg=colour255,bg=colour238,bold] #W #[default]"
+      set -g window-status-style fg=colour242,bg=colour235
+      set -g window-status-current-style fg=colour255,bg=colour238,bold
+
+      # 下段: ウィンドウ一覧 (中央揃え)
+      set -g status-format[1] "#[align=centre]#{W:#[fg=colour242]#[bg=colour235] #W ,#[fg=colour255]#[bg=colour238]#[bold] #W #[default]}"
     '';
   };
 }

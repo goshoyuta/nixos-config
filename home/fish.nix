@@ -97,6 +97,9 @@
       set -x LANG en_US.UTF-8
       set -x LC_ALL en_US.UTF-8
 
+      # claude
+      set -x CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 1
+
       # PATH
       fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/go/bin
       set -gx PATH $HOME/.npm-global/bin $PATH
@@ -109,6 +112,7 @@
       # keybindings
       bind \cw backward-kill-word
       bind \cg __ghq_repository_search
+      bind \eo tm-switch
 
       # tmux auto-start
       if not set -q TMUX
@@ -134,24 +138,38 @@
         '';
       };
 
-      fs = {
-        description = "Switch tmux session";
+      tm-switch = {
+        description = "Switch tmux sessions: direct if <=2, popup fzf if >=3";
         body = ''
-          tmux list-sessions -F "#{session_name}" | fzf --border --layout=reverse | read -l result; and tmux switch-client -t "$result"
+          set -l sessions (tmux list-sessions -F "#{session_name}" 2>/dev/null)
+          set -l count (count $sessions)
+          set -l current (tmux display-message -p "#{session_name}" 2>/dev/null)
+
+          if test $count -le 1
+              tmux display-message "No other sessions to switch to."
+          else if test $count -eq 2
+              for s in $sessions
+                  if test "$s" != "$current"
+                      tmux switch-client -t "$s"
+                      break
+                  end
+              end
+          else
+              tmux display-popup -w 80% -h 60% -E "fish -c _tm_fzf_switch"
+          end
         '';
       };
 
-      sd = {
+      _tm_fzf_switch = {
+        description = "fzf session switcher (called inside tmux popup)";
         body = ''
-          set dir (fd . -H -td $HOME | fzf --border --layout=reverse); or return
-          builtin cd "$dir"
-        '';
-      };
-
-      sv = {
-        body = ''
-          set file (fd . -H -tf $HOME | fzf --border --layout=reverse); or return
-          nvim "$file"
+          set -l session (tmux list-sessions -F "#{session_name}" | \
+              fzf --exit-0 --select-1 \
+                  --preview 'tmux list-windows -t {}' \
+                  --bind 'change:transform(c=$(tmux list-sessions -F "#{session_name}" | fzf --filter="$FZF_QUERY" | wc -l); [ "$c" -eq 1 ] && echo accept || echo first)')
+          if test -n "$session"
+              tmux switch-client -t "$session"
+          end
         '';
       };
     };

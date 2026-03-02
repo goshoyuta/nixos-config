@@ -7,10 +7,12 @@
   '';
 
   xdg.configFile."fcitx5/conf/classicui.conf".text = ''
-    Font=Noto Sans CJK JP 14
+    Font=Noto Sans CJK JP 13
   '';
 
-  xdg.configFile."fcitx5/profile".text = ''
+  xdg.configFile."fcitx5/profile" = {
+    force = true;
+    text = ''
     [Groups/0]
     # Group Name
     Name=Default
@@ -34,4 +36,5 @@
     [GroupOrder]
     0=Default
   '';
+  };
 }
