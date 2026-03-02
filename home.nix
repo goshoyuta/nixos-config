@@ -15,6 +15,7 @@
     ./home/sway.nix
     ./home/waybar.nix
     ./home/foot.nix
+    ./home/ghostty.nix
     ./home/xremap.nix
     ./home/wofi.nix
     ./home/copyq.nix
@@ -30,7 +31,7 @@
 
   # --- Packages ---
   home.packages = with pkgs; [
-    eza fd duckdb trash-cli uv bun psmisc gum
+    eza fd duckdb trash-cli uv bun psmisc lsof
   ] ++ lib.optionals isDesktop [
     brave google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel

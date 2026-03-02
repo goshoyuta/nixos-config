@@ -41,6 +41,7 @@
 
     extraConfig = ''
       # --- Environment ---
+      set -g extended-keys on
       set -g detach-on-destroy off
       set -g update-environment "DISPLAY WAYLAND_DISPLAY SSH_AUTH_SOCK"
       set -as terminal-overrides ',*:U8=0'
@@ -76,13 +77,16 @@
       # bind o display-popup -E "fish -c tm-switch"
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
-      bind -n M-] switch-client -n
+      bind -r -n M-[ run-shell "tmux switch-client -p 2>/dev/null || tmux switch-client -t $(tmux ls | tail -1 | cut -d: -f1)"
+      bind -r -n M-] run-shell "tmux switch-client -n 2>/dev/null || tmux switch-client -t $(tmux ls | head -1 | cut -d: -f1)"
+      bind -r -n C-S-h run-shell "tmux switch-client -p 2>/dev/null || tmux switch-client -t $(tmux ls | tail -1 | cut -d: -f1)"
+      bind -r -n C-S-l run-shell "tmux switch-client -n 2>/dev/null || tmux switch-client -t $(tmux ls | head -1 | cut -d: -f1)"
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"
       bind v split-window -h -c "#{pane_current_path}"
 
-# pane resize
+      # pane resize
       bind -r C-h resize-pane -L 1
       bind -r C-j resize-pane -D 1
       bind -r C-k resize-pane -U 1
@@ -115,8 +119,8 @@
       set -g status 2
       set -g status-style "fg=#c0caf5,bg=#1a1b26"
 
-      # 上段: PREFIX (左・固定幅) + REMOTE/セッション名 (中央)
-      set -g status-format[0] "#[bg=#1a1b26]#{?client_prefix,#[bg=#f7768e]#[fg=#1a1b26]#[bold] PREFIX #[bg=#1a1b26]#[fg=#c0caf5]#[nobold],        }#[align=centre]#{?#{==:#{client_key_table},off},#[bg=#e0af68]#[fg=#1a1b26]#[bold] REMOTE #[default],#[bg=#7aa2f7]#[fg=#1a1b26]#[bold] #S #[default]}"
+      # 上段: PREFIX (左・8文字) + セッション名 (中央) + REMOTE (右・8文字)
+      set -g status-format[0] "#{?client_prefix,#[bg=#f7768e]#[fg=#1a1b26]#[bold] PREFIX #[default],        }#[align=centre]#[bg=#7aa2f7]#[fg=#1a1b26]#[bold] #S #[default]#[align=right]#{?#{==:#{client_key_table},off},#[bg=#e0af68]#[fg=#1a1b26]#[bold] REMOTE #[default],        }"
 
       # 下段: ウィンドウ一覧 (中央)
       set -g status-format[1] "#[bg=#1a1b26]#[align=centre]#{W:#[fg=#565f89]#[bg=#1a1b26] #W ,#[fg=#7aa2f7]#[bg=#24283b]#[bold] #W #[default]}"
