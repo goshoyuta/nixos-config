@@ -166,4 +166,17 @@ require("lazy").setup({
 		config = true,
 		cmd = "Glow",
 	},
+	{
+		"christoomey/vim-tmux-navigator",
+		init = function()
+			vim.g.tmux_navigator_no_mappings = 1
+		end,
+		config = function()
+			local opts = { noremap = true, silent = true }
+			vim.keymap.set("n", "<M-h>", "<cmd>TmuxNavigateLeft<CR>", opts)
+			vim.keymap.set("n", "<M-j>", "<cmd>TmuxNavigateDown<CR>", opts)
+			vim.keymap.set("n", "<M-k>", "<cmd>TmuxNavigateUp<CR>", opts)
+			vim.keymap.set("n", "<M-l>", "<cmd>TmuxNavigateRight<CR>", opts)
+		end,
+	},
 })

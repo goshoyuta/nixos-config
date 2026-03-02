@@ -15,6 +15,16 @@
       sensible
       prefix-highlight
       {
+        plugin = vim-tmux-navigator;
+        extraConfig = ''
+          set -g @vim_navigator_mapping_left "M-h"
+          set -g @vim_navigator_mapping_down "M-j"
+          set -g @vim_navigator_mapping_up "M-k"
+          set -g @vim_navigator_mapping_right "M-l"
+          set -g @vim_navigator_mapping_prev ""
+        '';
+      }
+      {
         plugin = resurrect;
         extraConfig = ''
           set -g @resurrect-capture-pane-contents 'on'
@@ -64,31 +74,17 @@
       bind c new-window -c '#{pane_current_path}'
 
       # session
+      bind o run-shell "fish -c tm-switch"
+      # bind o display-popup -E "fish -c tm-switch"
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
       bind -n M-] switch-client -n
-      bind -n M-0 run-shell 'tmux switch-client -t $(tmux ls | sed -n "1s/:.*//p")'
-      bind -n M-1 run-shell 'tmux switch-client -t $(tmux ls | sed -n "2s/:.*//p")'
-      bind -n M-2 run-shell 'tmux switch-client -t $(tmux ls | sed -n "3s/:.*//p")'
-      bind -n M-3 run-shell 'tmux switch-client -t $(tmux ls | sed -n "4s/:.*//p")'
-      bind -n M-4 run-shell 'tmux switch-client -t $(tmux ls | sed -n "5s/:.*//p")'
-      bind -n M-5 run-shell 'tmux switch-client -t $(tmux ls | sed -n "6s/:.*//p")'
-      bind -n M-6 run-shell 'tmux switch-client -t $(tmux ls | sed -n "7s/:.*//p")'
-      bind -n M-7 run-shell 'tmux switch-client -t $(tmux ls | sed -n "8s/:.*//p")'
-      bind -n M-8 run-shell 'tmux switch-client -t $(tmux ls | sed -n "9s/:.*//p")'
-      bind -n M-9 run-shell 'tmux switch-client -t $(tmux ls | sed -n "10s/:.*//p")'
 
       # pane split
       bind h split-window -v -c "#{pane_current_path}"
       bind v split-window -h -c "#{pane_current_path}"
 
-      # pane navigation (Alt+hjkl)
-      bind -n M-h select-pane -L
-      bind -n M-j select-pane -D
-      bind -n M-k select-pane -U
-      bind -n M-l select-pane -R
-
-      # pane resize
+# pane resize
       bind -r C-h resize-pane -L 1
       bind -r C-j resize-pane -D 1
       bind -r C-k resize-pane -U 1

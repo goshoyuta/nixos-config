@@ -30,7 +30,7 @@
 
   # --- Packages ---
   home.packages = with pkgs; [
-    eza fd duckdb trash-cli uv bun
+    eza fd duckdb trash-cli uv bun psmisc gum
   ] ++ lib.optionals isDesktop [
     brave google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
