@@ -50,7 +50,7 @@
       ".fi" = "cd (ghq root)/github.com/goshoyuta/nixos-config/home && nvim fish.nix";
       ".v" = "cd (ghq root)/github.com/goshoyuta/nixos-config/home && nvim nvim.nix";
       ".c" = "cd (ghq root)/github.com/goshoyuta/nixos-config";
-      ".fo" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/foot.nix";
+      ".g" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/ghostty.nix";
       ".t" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/tmux.nix";
       ".s" = "nvim (ghq root)/github.com/goshoyuta/nixos-config/home/sway.nix";
 

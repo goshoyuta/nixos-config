@@ -14,7 +14,6 @@
     ./home/fcitx5.nix
     ./home/sway.nix
     ./home/waybar.nix
-    ./home/foot.nix
     ./home/ghostty.nix
     ./home/xremap.nix
     ./home/wofi.nix

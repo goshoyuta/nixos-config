@@ -12,7 +12,7 @@ in
     config = {
       # --- General ---
       modifier = mod;
-      terminal = "foot";
+      terminal = "ghostty";
       menu = menu;
       fonts = {
         names = [ "Noto Sans CJK JP" ];
@@ -95,7 +95,7 @@ in
         # nixos rebuild
         "${mod}+n" = "exec sh -c 'notify-send \"nixos-rebuild\" \"Build started...\"; OUTPUT=$(sudo nixos-rebuild switch --flake $(ghq root)/github.com/goshoyuta/nixos-config 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send \"nixos-rebuild succeeded\"; fi'";
         # app launch
-        "${mod}+Return" = "exec foot";
+        "${mod}+Return" = "exec ghostty";
         "${mod}+space" = "exec ${menu}";
 
         # window
@@ -187,7 +187,7 @@ in
         { command = "fcitx5"; }
         { command = "sh -c 'pgrep xremap || xremap ${config.xdg.configHome}/xremap/config.yml'"; }
         { command = "wl-paste --watch cliphist store"; }
-        { command = ''swaymsg "workspace 1; exec foot;"''; }
+        { command = ''swaymsg "workspace 1; exec ghostty;"''; }
         { command = ''swaymsg "workspace 2; exec brave --ozone-platform=wayland;"''; }
         { command = ''swayidle -w timeout 3 "fcitx5-remote -c" timeout 300 "swaylock -f" timeout 600 "swaymsg 'output * dpms off'" resume "swaymsg 'output * dpms on'" before-sleep "swaylock -f"''; }
       ];

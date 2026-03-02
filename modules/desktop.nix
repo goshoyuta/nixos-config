@@ -12,7 +12,6 @@
 
   # --- Packages ---
   environment.systemPackages = with pkgs; [
-    foot
     xsel xclip wl-clipboard libnotify
     swayidle swaylock
   ];
