@@ -181,6 +181,11 @@ in
         "${mod}+Shift+0" = "exec swaymsg 'seat seat0 hide_cursor 1000'";
       };
 
+      # --- Assigns ---
+      assigns = {
+        "number 3" = [ { app_id = "google-chrome"; } ];
+      };
+
       # --- Modes ---
       modes = {
         resize = {
