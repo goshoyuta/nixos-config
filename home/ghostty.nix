@@ -8,6 +8,9 @@
       font-family = "Cica";
       font-size = 18;
 
+      # --- Padding ---
+      window-padding-x = 8;
+
       # --- Keybindings ---
       keybind = [];
 

@@ -45,6 +45,7 @@
 
       # claude
       cc = "claude --dangerously-skip-permissions";
+      ccr = "claude -r --dangerously-skip-permissions";
 
       # config editing
       ".fi" = "cd (ghq root)/github.com/goshoyuta/nixos-config/home && nvim fish.nix";

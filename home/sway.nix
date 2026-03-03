@@ -208,7 +208,6 @@ in
 
     extraConfig = ''
       title_align center
-      for_window [class="^.*"] border none
       no_focus [title="^Peek preview$"]
       exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
     '';
