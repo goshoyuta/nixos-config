@@ -15,6 +15,7 @@
     ./home/sway.nix
     ./home/waybar.nix
     ./home/ghostty.nix
+    ./home/kitty.nix
     ./home/xremap.nix
     ./home/wofi.nix
     ./home/copyq.nix
