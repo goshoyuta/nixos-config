@@ -31,10 +31,17 @@
   # --- Packages ---
   home.packages = with pkgs; [
     eza fd duckdb trash-cli uv bun psmisc lsof
+    (python3.withPackages (ps: with ps; [
+      numpy
+      sounddevice
+      scipy
+      openai
+      typer
+    ]))
   ] ++ lib.optionals isDesktop [
     brave google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
-    espanso-wayland font-manager
+    espanso-wayland font-manager wtype
   ];
 
   programs.home-manager.enable = true;

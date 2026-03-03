@@ -3,6 +3,12 @@
 let
   mod = "Mod4";
   menu = "wofi -G --show drun insensitive=true width=70% height=70% | xargs swaymsg exec --";
+  sttStart = pkgs.writeShellScript "stt-start" ''
+    pgrep -f "main.py.*--ptt" || python /home/yg/ghq/github.com/yg/speech-to-text/main.py --language ja --ptt
+  '';
+  sttStop = pkgs.writeShellScript "stt-stop" ''
+    kill -USR1 $(cat /tmp/stt.pid) 2>/dev/null || true
+  '';
   toggleDim = pkgs.writeShellScript "toggle-dim" ''
     STATE="/tmp/.display_dim"
     if [ -f "$STATE" ]; then
@@ -215,6 +221,8 @@ in
       title_align center
       no_focus [title="^Peek preview$"]
       exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+      bindsym ${mod}+m exec ${sttStart}
+      bindsym --release ${mod}+m exec ${sttStop}
     '';
   };
 }

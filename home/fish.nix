@@ -84,6 +84,9 @@
 
     # --- Login Shell ---
     loginShellInit = ''
+      if test -f ~/.config/stt/api_key
+          set -x OPENAI_API_KEY (cat ~/.config/stt/api_key)
+      end
       if test -z "$DISPLAY" -a (tty) = "/dev/tty1"
           exec sway
       end
