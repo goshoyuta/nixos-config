@@ -221,8 +221,8 @@ in
       title_align center
       no_focus [title="^Peek preview$"]
       exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-      bindsym ${mod}+m exec ${sttStart}
-      bindsym --release ${mod}+m exec ${sttStop}
+      bindsym ${mod}+g exec ${sttStart}
+      bindsym --release ${mod}+g exec ${sttStop}
     '';
   };
 }
