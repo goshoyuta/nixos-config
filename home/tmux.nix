@@ -126,13 +126,15 @@
 
       # status line - 2段表示: セッション(上) / ウィンドウ(下)
       set -g status 2
-      set -g status-style "fg=#c0caf5,bg=#1a1b26"
+      # status-style を青にして、上段の余白も青で塗りつぶす
+      set -g status-style "fg=#1a1b26,bg=#7aa2f7"
 
-      # 上段: PREFIX (左・8文字) + セッション名 (中央) + REMOTE (右・8文字)
-      set -g status-format[0] "#{?client_prefix,#[bg=#f7768e]#[fg=#1a1b26]#[bold] PREFIX #[default],        }#[align=centre]#[bg=#7aa2f7]#[fg=#1a1b26]#[bold] #S #[default]#[align=right]#{?#{==:#{client_key_table},off},#[bg=#e0af68]#[fg=#1a1b26]#[bold] REMOTE #[default],        }"
+      # 上段: PREFIX (左・8文字) + セッション名 (中央・青背景で横いっぱい) + REMOTE (右・8文字)
+      # 三項演算子内の #[...] にカンマを含めると tmux がカンマを区切り文字と誤認するため、属性は必ず分割する
+      set -g status-format[0] "#[fill=#7aa2f7]#[bg=#7aa2f7]#[fg=#1a1b26]#{?client_prefix,#[bg=#f7768e]#[bold] PREFIX #[bg=#7aa2f7]#[fg=#1a1b26]#[nobold],        }#[align=centre]#[bold] #S #[align=right]#[nobold]#{?#{==:#{client_key_table},off},#[bg=#e0af68]#[bold] REMOTE #[bg=#7aa2f7]#[fg=#1a1b26]#[nobold],        }"
 
-      # 下段: ウィンドウ一覧 (中央)
-      set -g status-format[1] "#[bg=#1a1b26]#[align=centre]#{W:#[fg=#565f89]#[bg=#1a1b26] #W ,#[fg=#7aa2f7]#[bg=#24283b]#[bold] #W #[default]}"
+      # 下段: ウィンドウ一覧 (中央) - fill=#1a1b26 で暗色背景
+      set -g status-format[1] "#[fill=#1a1b26]#[bg=#1a1b26]#[fg=#c0caf5]#[align=centre]#{W:#[fg=#565f89]#[bg=#1a1b26] #W ,#[fg=#7aa2f7]#[bg=#24283b]#[bold] #W #[default]#[bg=#1a1b26]}"
     '';
   };
 }
