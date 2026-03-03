@@ -111,6 +111,7 @@
       set -x FZF_DEFAULT_OPTS "--layout=reverse --border"
 
       # keybindings
+      bind \ck kill-line
       bind \cw backward-kill-word
       bind \cg __ghq_repository_search
       bind \eo tm-switch
