@@ -4,10 +4,12 @@ let
   mod = "Mod4";
   menu = "wofi -G --show drun insensitive=true width=70% height=70% | xargs swaymsg exec --";
   sttStart = pkgs.writeShellScript "stt-start" ''
+    pactl set-sink-mute @DEFAULT_SINK@ 1
     pgrep -f "main.py.*--ptt" || python /home/yg/ghq/github.com/yg/speech-to-text/main.py --language ja --ptt
   '';
   sttStop = pkgs.writeShellScript "stt-stop" ''
     kill -USR1 $(cat /tmp/stt.pid) 2>/dev/null || true
+    pactl set-sink-mute @DEFAULT_SINK@ 0
   '';
   toggleDim = pkgs.writeShellScript "toggle-dim" ''
     STATE="/tmp/.display_dim"
