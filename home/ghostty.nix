@@ -6,10 +6,13 @@
     package = pkgs-unstable.ghostty;
     settings = {
       font-family = "Cica";
-      font-size = 18;
+      font-size = 20;
 
       # --- Padding ---
-      window-padding-x = 8;
+      window-padding-x = 22;
+
+      # --- Notifications ---
+      desktop-notifications = false;
 
       # --- Keybindings ---
       keybind = [];

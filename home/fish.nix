@@ -58,8 +58,6 @@
       # misc
       v = "nvim";
       rg = "rg -i";
-      du = "dust -r";
-      df = "gdu";
       mutt = "neomutt";
       tp = "trash-put";
       tl = "trash-list";

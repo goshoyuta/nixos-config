@@ -108,8 +108,13 @@
       bind -T copy-mode-vi Escape send -X cancel
       bind -T copy-mode-vi v send -X begin-selection
       bind -T copy-mode-vi C-v send -X rectangle-toggle
+      ${if isDesktop then ''
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
+      '' else ''
+      bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+      bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
+      ''}
 
       # --- Style (Tokyo Night) ---
       set -g allow-rename on
