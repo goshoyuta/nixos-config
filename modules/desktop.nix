@@ -22,6 +22,7 @@
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
     font-awesome
+    udev-gothic-nf
     (callPackage ../packages/cica.nix {})
   ];
 

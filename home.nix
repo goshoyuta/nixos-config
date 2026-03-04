@@ -16,6 +16,7 @@
     ./home/waybar.nix
     ./home/ghostty.nix
     ./home/kitty.nix
+    ./home/alacritty.nix
     ./home/xremap.nix
     ./home/wofi.nix
     ./home/copyq.nix

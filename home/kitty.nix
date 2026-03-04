@@ -4,7 +4,7 @@
   programs.kitty = {
     enable = true;
     font = {
-      name = "Cica";
+      name = "UDEVGothic35 NF";
       size = 18;
     };
     settings = {
