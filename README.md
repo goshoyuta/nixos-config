@@ -150,6 +150,53 @@ passwd yg
 
 その後 `exit` して `yg` ユーザーでログインする。
 
+## Pixel Linux ターミナルでの開発環境セットアップ
+
+Google Pixel 6 以降で使える Linux ターミナル（Android Virtualization Framework）向けの設定。
+Debian の VM 上に Nix + Home Manager を導入する。
+
+### 1. Nix のインストール
+
+Linux ターミナルを開いて以下を実行：
+
+```bash
+sh <(curl -L https://nixos.org/nix/install) --daemon
+```
+
+> **Debian 自体は消えない。** Debian の上に Nix を追加インストールするだけ。
+
+インストール完了後、ターミナルを再起動（いったん閉じて開き直す）。
+
+### 2. このリポジトリをクローン
+
+```bash
+nix-shell -p git gh
+
+# GitHub にログイン (SSH 鍵があれば不要)
+gh auth login
+
+git clone https://github.com/goshoyuta/nixos-config ~/nixos-config
+```
+
+### 3. Home Manager で設定を適用
+
+```bash
+cd ~/nixos-config
+nix run home-manager -- switch --flake .#user
+```
+
+これで fish, neovim, tmux, git, gh, go, nodejs などが一括インストール・設定される。
+
+### 4. 設定を変更するとき
+
+```bash
+cd ~/nixos-config
+# home/android.nix などを編集してから：
+home-manager switch --flake .#user
+```
+
+---
+
 ## 日常の使い方
 
 ```bash
