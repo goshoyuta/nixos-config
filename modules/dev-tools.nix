@@ -15,7 +15,7 @@
     nodejs nodePackages.pm2 python3 go fnm rustup jdk21
 
     # dev CLI
-    lazygit ghq
+    lazygit ghq playwright
 
     # cloud & infra
     distrobox docker-compose
