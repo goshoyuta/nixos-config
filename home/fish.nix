@@ -72,6 +72,9 @@
       nbq = "nb q";
       nbta = "nb todo add";
 
+      # open vultr in a new Ghostty window (avoids tmux nesting)
+      "ssh vultr" = "vultr";
+
       # other
       mu = "neomutt";
       lg = "lazygit";
@@ -180,7 +183,7 @@
       vultr = {
         description = "Open ghostty terminal connected to vultr server";
         body = ''
-          setsid ghostty -e ssh vultr >/dev/null 2>&1 &
+          setsid ghostty -e env TERM=xterm-256color ssh vultr >/dev/null 2>&1 &
         '';
       };
     };

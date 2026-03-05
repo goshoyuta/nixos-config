@@ -37,6 +37,13 @@
           set -g @continuum-save-interval '15'
         '';
       }
+      {
+        plugin = fingers;
+        extraConfig = ''
+          set -g @fingers-key K
+          set -g @fingers-ctrl-action "xdg-open {}"
+        '';
+      }
     ];
 
     extraConfig = ''
@@ -98,11 +105,13 @@
       bind -r C-k resize-pane -U 1
       bind -r C-l resize-pane -R 1
 
-      # URL picker popup (foot-like link hints)
-      bind -n M-f display-popup -E "tmux capture-pane -J -p | grep -oE 'https?://[^[:space:]]+' | sort -u | fzf --prompt='URL> ' | xargs -r xdg-open"
-
       # copy-mode with IME off (desktop only)
-      ${if isDesktop then ''bind Space run-shell "fcitx5-remote -c" \; copy-mode'' else ""}
+      ${if isDesktop then ''
+      bind Space run-shell "fcitx5-remote -c" \; copy-mode
+      bind -n C-S-j run-shell "fcitx5-remote -c" \; copy-mode
+      '' else ''
+      bind -n C-S-j copy-mode
+      ''}
 
       # --- Copy Mode (vi) ---
       bind -T copy-mode-vi Escape send -X cancel

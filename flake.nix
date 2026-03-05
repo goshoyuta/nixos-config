@@ -14,10 +14,13 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+    };
   };
 
   # --- Outputs ---
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, nix-on-droid, ... }:
     let
       system = "x86_64-linux";
       mkHost = { hostDir, extraModules ? [ ], isDesktop }:
@@ -51,6 +54,11 @@
           hostDir = ./hosts/server/configuration.nix;
           isDesktop = false;
         };
+      };
+
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        modules = [ ./hosts/android/configuration.nix ];
+        home-manager-path = home-manager.outPath;
       };
     };
 }

@@ -12,8 +12,7 @@
 
   xdg.configFile."fcitx5/conf/mozc.conf".text = ''
     [General]
-    FundamentalCharacterForm=FUNDAMENTAL_HALF_WIDTH
-    SpaceCharacterForm=SPACE_CHARACTER_HALF_WIDTH
+    SpaceCharacterForm=FUNDAMENTAL_HALF_WIDTH
   '';
 
   xdg.configFile."fcitx5/profile" = {

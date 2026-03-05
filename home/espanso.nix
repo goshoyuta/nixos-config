@@ -1,7 +1,10 @@
 { config, pkgs, lib, ... }:
 
 {
-  services.espanso.enable = true;
+  services.espanso = {
+    enable = true;
+    package = pkgs.espanso-wayland;
+  };
 
   xdg.configFile = {
     "espanso/config/default.yml".source = lib.mkForce ../dotfiles/espanso/config/default.yml;
