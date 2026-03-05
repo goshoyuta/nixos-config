@@ -43,7 +43,7 @@
   ] ++ lib.optionals isDesktop [
     brave google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
-    font-manager wtype
+    font-manager wtype xorg.setxkbmap
   ];
 
   programs.home-manager.enable = true;

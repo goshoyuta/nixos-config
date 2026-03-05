@@ -12,7 +12,7 @@ let
     fi
     pactl set-sink-mute "$SINK" 1
     echo "$SINK" > /tmp/stt_mute_sink
-    pgrep -f "main.py.*--ptt" || python /home/yg/ghq/github.com/yg/speech-to-text/main.py --language ja --ptt
+    pgrep -f "speech-to-text.*--ptt" || /home/yg/ghq/github.com/yg/speech-to-text/target/release/speech-to-text --language ja --ptt
   '';
   sttStop = pkgs.writeShellScript "stt-stop" ''
     kill -USR1 $(cat /tmp/stt.pid) 2>/dev/null || true

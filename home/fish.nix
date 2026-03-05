@@ -112,7 +112,7 @@
       # FZF
       set -x FZF_LEGACY_KEYBINDINGS 0
       set -x FZF_DEFAULT_COMMAND 'rg --hidden -l ""'
-      set -x FZF_DEFAULT_OPTS "--layout=reverse --border"
+      set -x FZF_DEFAULT_OPTS "--layout=reverse --border --height 100%"
 
       # keybindings
       bind \ck kill-line
