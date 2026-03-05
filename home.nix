@@ -43,7 +43,7 @@
   ] ++ lib.optionals isDesktop [
     brave google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
-    espanso-wayland font-manager wtype
+    font-manager wtype
   ];
 
   programs.home-manager.enable = true;

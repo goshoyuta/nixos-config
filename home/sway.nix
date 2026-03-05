@@ -124,7 +124,8 @@ in
       # --- Keybindings ---
       keybindings = lib.mkOptionDefault {
         # nixos rebuild
-        "${mod}+n" = "exec sh -c 'notify-send \"nixos-rebuild\" \"Build started...\"; OUTPUT=$(sudo nixos-rebuild switch --fast --flake $(ghq root)/github.com/goshoyuta/nixos-config 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send \"nixos-rebuild succeeded\"; fi'";
+        "${mod}+n" = "exec sh -c 'notify-send -a nixos-rebuild \"nixos-rebuild\" \"Build started...\"; OUTPUT=$(sudo nixos-rebuild switch --fast --flake $(ghq root)/github.com/goshoyuta/nixos-config 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -a nixos-rebuild -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send -a nixos-rebuild \"nixos-rebuild succeeded\"; fi'";
+        "${mod}+Shift+n" = "exec makoctl dismiss";
         # app launch
         "${mod}+Return" = "exec ghostty";
         "${mod}+space" = "exec ${menu}";

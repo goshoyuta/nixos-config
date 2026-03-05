@@ -8,6 +8,9 @@
       [urgency=critical]
       background-color=#CC2200FF
       border-color=#FF4444FF
+
+      [app-name=nixos-rebuild]
+      default-timeout=0
     '';
   };
 }
