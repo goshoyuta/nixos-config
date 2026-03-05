@@ -1,12 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, isDesktop, pkgs-unstable, ... }:
 
 {
-  # 既存モジュールが必要とする引数を注入
-  _module.args = {
-    isDesktop = false;
-    pkgs-unstable = pkgs;
-  };
-
   imports = [
     ./fish.nix
     ./git.nix
@@ -16,10 +10,10 @@
     ./ssh.nix
   ];
 
-  # nix-on-droid のデフォルトユーザー設定
-  home.username = "nix-on-droid";
-  home.homeDirectory = "/data/data/com.termux.nix/files/home";
-  home.stateVersion = "24.05";
+  # Pixel Linux terminal のデフォルトユーザー
+  home.username = "user";
+  home.homeDirectory = "/home/user";
+  home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
     eza

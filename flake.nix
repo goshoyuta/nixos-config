@@ -14,13 +14,10 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-24.05";
-    };
   };
 
   # --- Outputs ---
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, nix-on-droid, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, ... }:
     let
       system = "x86_64-linux";
       mkHost = { hostDir, extraModules ? [ ], isDesktop }:
@@ -39,6 +36,7 @@
             agenix.nixosModules.default
           ] ++ extraModules;
         };
+      androidSystem = "aarch64-linux";
     in
     {
       nixosConfigurations = {
@@ -56,9 +54,20 @@
         };
       };
 
-      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        modules = [ ./hosts/android/configuration.nix ];
-        home-manager-path = home-manager.outPath;
+      # Pixel Linux terminal (Android Virtualization Framework)
+      homeConfigurations."user" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = androidSystem;
+          config.allowUnfree = true;
+        };
+        extraSpecialArgs = {
+          isDesktop = false;
+          pkgs-unstable = import nixpkgs-unstable {
+            system = androidSystem;
+            config.allowUnfree = true;
+          };
+        };
+        modules = [ ./home/android.nix ];
       };
     };
 }
