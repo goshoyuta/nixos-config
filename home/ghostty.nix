@@ -14,6 +14,9 @@
       # --- Notifications ---
       desktop-notifications = false;
 
+      # --- Window ---
+      confirm-close-surface = false;
+
       # --- Keybindings ---
       keybind = [];
 

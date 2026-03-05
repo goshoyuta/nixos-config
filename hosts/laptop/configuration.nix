@@ -64,6 +64,9 @@
     });
   '';
 
+  # --- SSH Agent ---
+  programs.ssh.startAgent = true;
+
   # --- Firmware ---
   services.fwupd.enable = true;
 

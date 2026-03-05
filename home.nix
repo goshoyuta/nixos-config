@@ -10,6 +10,7 @@
     ./home/tmux.nix
     ./home/claude.nix
     ./home/neomutt.nix
+    ./home/ssh.nix
   ] ++ lib.optionals isDesktop [
     ./home/fcitx5.nix
     ./home/sway.nix

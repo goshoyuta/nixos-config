@@ -176,6 +176,13 @@
           end
         '';
       };
+
+      vultr = {
+        description = "Open ghostty terminal connected to vultr server";
+        body = ''
+          setsid ghostty -e ssh -i ~/.ssh/id_ed25519 yg@202.182.126.60 >/dev/null 2>&1 &
+        '';
+      };
     };
 
     # --- Plugins ---
