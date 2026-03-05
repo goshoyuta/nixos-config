@@ -1,8 +1,10 @@
 { config, pkgs, lib, ... }:
 
 {
+  services.espanso.enable = true;
+
   xdg.configFile = {
-    "espanso/config/default.yml".source = ../dotfiles/espanso/config/default.yml;
+    "espanso/config/default.yml".source = lib.mkForce ../dotfiles/espanso/config/default.yml;
   };
 
   home.activation.espansoBase = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
