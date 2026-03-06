@@ -126,7 +126,24 @@
               if tmux has-session 2>/dev/null
                   tmux attach-session
               else
-                  tmux new-session
+                  # 仮セッションを detached で作成し continuum の自動復元フックを起動
+                  tmux new-session -d -s _init_
+                  # 最大3秒ポーリングして復元セッションが現れるのを待つ
+                  for i in (seq 30)
+                      sleep 0.1
+                      set -l sessions (tmux list-sessions -F "#{session_name}" 2>/dev/null)
+                      if test (count $sessions) -gt 1
+                          break
+                      end
+                  end
+                  # 復元セッションがあれば仮セッションを削除、なければ main にリネーム
+                  set -l all_sessions (tmux list-sessions -F "#{session_name}" 2>/dev/null)
+                  if test (count $all_sessions) -gt 1
+                      tmux kill-session -t _init_ 2>/dev/null
+                  else
+                      tmux rename-session -t _init_ main 2>/dev/null
+                  end
+                  tmux attach-session
               end
           end
       end

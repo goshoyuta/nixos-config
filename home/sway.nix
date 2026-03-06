@@ -3,6 +3,50 @@
 let
   mod = "Mod4";
   menu = "wofi -G --show drun insensitive=true width=70% height=70% | xargs swaymsg exec --";
+  sttOverlay = pkgs.writeScript "stt-overlay" ''
+    #!/usr/bin/env python3
+    import time, math, sys, signal
+
+    BARS = 9
+    HEIGHT = 7
+
+    def cleanup(sig=None, frame=None):
+        sys.stdout.write('\033[?25h\033[2J\033[H')
+        sys.stdout.flush()
+        sys.exit(0)
+
+    signal.signal(signal.SIGTERM, cleanup)
+    signal.signal(signal.SIGINT, cleanup)
+
+    sys.stdout.write('\033[?25l')
+    sys.stdout.flush()
+
+    frame = 0
+    while True:
+        out = '\033[H'
+        for row in range(HEIGHT, 0, -1):
+            line = '  '
+            for i in range(BARS):
+                phase = frame * 0.25 + i * 0.7
+                bar_h = int((math.sin(phase) * 0.45 + 0.55) * HEIGHT)
+                if row <= bar_h:
+                    if row >= HEIGHT * 0.7:
+                        line += '\033[96m'
+                    elif row >= HEIGHT * 0.4:
+                        line += '\033[36m'
+                    else:
+                        line += '\033[34m'
+                    line += '\u2588\u2588\033[0m'
+                else:
+                    line += '  '
+                line += ' '
+            out += line + '\n'
+        out += '  \033[96m\u25cf \u9332\u97f3\u4e2d...\033[0m   '
+        sys.stdout.write(out)
+        sys.stdout.flush()
+        frame += 1
+        time.sleep(0.05)
+  '';
   sttStart = pkgs.writeShellScript "stt-start" ''
     SINK=$(pactl get-default-sink)
     if pactl get-sink-mute "$SINK" | grep -q "yes"; then
@@ -12,10 +56,13 @@ let
     fi
     pactl set-sink-mute "$SINK" 1
     echo "$SINK" > /tmp/stt_mute_sink
+    swaymsg '[app_id="stt-overlay"] kill' 2>/dev/null || true
+    ghostty --class=stt-overlay -e ${sttOverlay} &
     pgrep -f "speech-to-text.*--ptt" || /home/yg/ghq/github.com/yg/speech-to-text/target/release/speech-to-text --language ja --ptt
   '';
   sttStop = pkgs.writeShellScript "stt-stop" ''
     kill -USR1 $(cat /tmp/stt.pid) 2>/dev/null || true
+    swaymsg '[app_id="stt-overlay"] kill' 2>/dev/null || true
     SINK=$(cat /tmp/stt_mute_sink 2>/dev/null)
     WAS_MUTED=$(cat /tmp/stt_mute_before 2>/dev/null)
     if [ -n "$SINK" ] && [ "$WAS_MUTED" = "no" ]; then
@@ -234,6 +281,8 @@ in
     extraConfig = ''
       title_align center
       no_focus [title="^Peek preview$"]
+      no_focus [app_id="stt-overlay"]
+      for_window [app_id="stt-overlay"] floating enable, resize set 320 180, move position center, border none
       exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
       bindsym ${mod}+g exec ${sttStart}
       bindsym --release ${mod}+g exec ${sttStop}

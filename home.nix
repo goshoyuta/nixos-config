@@ -23,6 +23,7 @@
     ./home/espanso.nix
     ./home/swaylock.nix
     ./home/mako.nix
+    ./home/brave.nix
   ];
 
   # --- User ---
@@ -41,7 +42,7 @@
       typer
     ]))
   ] ++ lib.optionals isDesktop [
-    brave google-chrome wl-clipboard wofi cliphist
+    google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
     font-manager wtype xorg.setxkbmap
   ];

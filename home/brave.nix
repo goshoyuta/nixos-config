@@ -1,0 +1,14 @@
+{ pkgs, ... }:
+{
+  home.packages = [
+    (pkgs.symlinkJoin {
+      name = "brave";
+      paths = [ pkgs.brave ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/brave \
+          --add-flags "--disable-session-crashed-bubble"
+      '';
+    })
+  ];
+}
