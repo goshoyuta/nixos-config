@@ -203,6 +203,20 @@
           setsid ghostty -e env TERM=xterm-256color ssh -L 8080:localhost:3000 vultr >/dev/null 2>&1 &
         '';
       };
+
+      img-to-vultr = {
+        description = "Transfer clipboard image to vultr and copy remote path";
+        body = ''
+          set -l remote_path "/tmp/clipboard_"(date +%Y%m%d%H%M%S)".png"
+          if wl-paste --type image/png 2>/dev/null | ssh vultr "cat > $remote_path"
+              echo "Saved: $remote_path"
+              echo -n $remote_path | wl-copy
+              echo "(path copied to clipboard)"
+          else
+              echo "Failed: no PNG in clipboard?"
+          end
+        '';
+      };
     };
 
     # --- Plugins ---

@@ -52,6 +52,15 @@ gradient = 1
       pactl set-sink-mute "$SINK" 0
     fi
   '';
+  imgToVultr = pkgs.writeShellScript "img-to-vultr" ''
+    REMOTE_PATH="/tmp/clipboard_$(date +%Y%m%d%H%M%S).png"
+    if ${pkgs.wl-clipboard}/bin/wl-paste --type image/png 2>/dev/null | ssh vultr "cat > $REMOTE_PATH"; then
+      echo -n "$REMOTE_PATH" | ${pkgs.wl-clipboard}/bin/wl-copy
+      ${pkgs.libnotify}/bin/notify-send -a img-to-vultr "Image transferred" "$REMOTE_PATH"
+    else
+      ${pkgs.libnotify}/bin/notify-send -a img-to-vultr -u critical "img-to-vultr failed" "No PNG in clipboard?"
+    fi
+  '';
   toggleDim = pkgs.writeShellScript "toggle-dim" ''
     STATE="/tmp/.display_dim"
     if [ -f "$STATE" ]; then
@@ -153,6 +162,9 @@ in
 
       # --- Keybindings ---
       keybindings = lib.mkOptionDefault {
+        # remove default binding to use for STT
+        "${mod}+space" = null;
+
         # nixos rebuild
         "${mod}+n" = "exec sh -c 'notify-send -a nixos-rebuild \"nixos-rebuild\" \"Build started...\"; OUTPUT=$(sudo nixos-rebuild switch --fast --flake $(ghq root)/github.com/goshoyuta/nixos-config 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -a nixos-rebuild -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send -a nixos-rebuild \"nixos-rebuild succeeded\"; fi'";
         "${mod}+Shift+n" = "exec makoctl dismiss";
@@ -215,6 +227,7 @@ in
 
         # clipboard (cliphist)
         "${mod}+v" = "exec sh -c 'cliphist list | wofi --show dmenu -G insensitive=true | cliphist decode | wl-copy'";
+        "${mod}+Shift+v" = "exec ${imgToVultr}";
 
         # IME
         "Henkan_Mode" = "exec fcitx5-remote -o";
@@ -226,7 +239,7 @@ in
         # system
         "${mod}+Shift+q" = "exec swaynag -t warning -m 'Shutdown?' -b 'Yes' 'shutdown -h now'";
         "${mod}+Shift+b" = "exec bluetoothctl connect 70:5A:6F:62:A9:D1";
-        "${mod}+Shift+i" = ''exec nmcli device wifi connect "Pixel_6859" password "jn95vj7qt386czp"'';
+        "${mod}+Shift+i" = ''exec sh -c 'OUTPUT=$(nmcli device wifi connect "Pixel_6859" password "jn95vj7qt386czp" 2>&1); notify-send "WiFi" "$OUTPUT"' '';
         "${mod}+Shift+9" = "exec swaymsg 'seat seat0 hide_cursor 0'";
         "${mod}+Shift+0" = "exec swaymsg 'seat seat0 hide_cursor 1000'";
       };
