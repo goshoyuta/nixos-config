@@ -68,6 +68,11 @@ ls_specific_settings: {}
 # These patterns are merged additively with each project's own ignored_paths.
 ignored_paths: []
 
+# list of regex patterns which, when matched, mark a memory entry as read-only.
+# For example, "global/.*" will mark all global memories as read-only.
+# You can extend the list on a per-project basis in the project.yml configuration file.
+read_only_memory_patterns: []
+
 # timeout, in seconds, after which tool executions are terminated
 tool_timeout: 240
 
@@ -119,6 +124,14 @@ token_count_estimator: CHAR_COUNT
 # or with tool calls that find very many symbols.
 # Can be overridden in project.yml.
 symbol_info_budget: 10
+
+# template for the location of the per-project .serena data folder (memories, caches, etc.).
+# Supports the following placeholders:
+#   $projectDir         - the absolute path to the project root directory
+#   $projectFolderName  - the name of the project directory
+# Default: "$projectDir/.serena" (data stored inside the project directory)
+# Example for a central location: "/projects-metadata/$projectFolderName/.serena"
+project_serena_folder_location: "$projectDir/.serena"
 
 # the list of registered project paths (updated automatically).
 projects:

@@ -61,6 +61,10 @@ gradient = 1
       ${pkgs.libnotify}/bin/notify-send -a img-to-vultr -u critical "img-to-vultr failed" "No PNG in clipboard?"
     fi
   '';
+  wallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/main/landscapes/forrest.png";
+    sha256 = "00qx3h60s92hmf09ik1s3984jym6li270201qqzs5x4yks7q6flc";
+  };
   toggleDim = pkgs.writeShellScript "toggle-dim" ''
     STATE="/tmp/.display_dim"
     if [ -f "$STATE" ]; then
@@ -264,6 +268,7 @@ in
 
       # --- Startup ---
       startup = [
+        { command = "${pkgs.swaybg}/bin/swaybg -i ${wallpaper} -m fill"; always = true; }
         { command = "mako"; }
         { command = "fcitx5"; }
         { command = "sh -c 'pgrep xremap || xremap ${config.xdg.configHome}/xremap/config.yml'"; }
@@ -274,7 +279,10 @@ in
       ];
     };
 
-    extraConfig = ''
+  };
+
+  wayland.windowManager.sway.extraConfig = ''
+      for_window [app_id="com.mitchellh.ghostty"] opacity 0.9
       title_align center
       no_focus [title="^Peek preview$"]
       no_focus [app_id="stt-overlay"]
@@ -283,5 +291,4 @@ in
       bindsym --no-repeat ${mod}+space exec ${sttStart}
       bindsym --release ${mod}+space exec ${sttStop}
     '';
-  };
 }
