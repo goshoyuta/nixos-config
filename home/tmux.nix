@@ -55,6 +55,10 @@
       set -ga terminal-features "*:passthrough"
       set -ag terminal-overrides ",xterm-256color:RGB"
 
+      # --- Clipboard (OSC 52 for SSH) ---
+      set -g set-clipboard on
+      set -as terminal-overrides ',xterm-256color:Ms=\E]52;%p1%s;%p2%s\007'
+
       # --- Remote Mode (F12 toggle) ---
       bind -T root F12 \
         set key-table off \;\

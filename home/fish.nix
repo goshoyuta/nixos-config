@@ -200,7 +200,7 @@
       vultr = {
         description = "Open ghostty terminal connected to vultr server";
         body = ''
-          setsid ghostty -e env TERM=xterm-256color ssh vultr >/dev/null 2>&1 &
+          setsid ghostty -e env TERM=xterm-256color ssh -L 8080:localhost:3000 vultr >/dev/null 2>&1 &
         '';
       };
     };

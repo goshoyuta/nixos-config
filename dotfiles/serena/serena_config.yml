@@ -123,3 +123,4 @@ symbol_info_budget: 10
 # the list of registered project paths (updated automatically).
 projects:
 - /home/yg/ghq/github.com/fiveinc/kouro.info
+- /home/yg/ghq/github.com/goshoyuta/nixos-config
