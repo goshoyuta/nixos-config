@@ -158,7 +158,7 @@ in
         "${mod}+Shift+n" = "exec makoctl dismiss";
         # app launch
         "${mod}+Return" = "exec ghostty";
-        "${mod}+space" = "exec ${menu}";
+        "${mod}+p" = "exec ${menu}";
 
         # window
         "${mod}+Shift+d" = "kill";
@@ -267,8 +267,8 @@ in
       no_focus [app_id="stt-overlay"]
       for_window [app_id="stt-overlay"] floating enable, resize set 320 180, move position center, border none
       exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-      bindsym --no-repeat ${mod}+g exec ${sttStart}
-      bindsym --release ${mod}+g exec ${sttStop}
+      bindsym --no-repeat ${mod}+space exec ${sttStart}
+      bindsym --release ${mod}+space exec ${sttStop}
     '';
   };
 }
