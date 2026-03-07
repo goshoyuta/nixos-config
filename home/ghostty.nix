@@ -19,7 +19,7 @@
 
       # --- Keybindings ---
       keybind = [
-        "ctrl+shift+j=text:\x1b[27;6;106~"
+        "ctrl+shift+j=csi:27;6;106~"
       ];
 
       # --- Colors (Catppuccin Mocha) ---

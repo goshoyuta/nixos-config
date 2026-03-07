@@ -33,7 +33,7 @@
 
   # --- Packages ---
   home.packages = with pkgs; [
-    eza fd duckdb trash-cli uv bun psmisc lsof
+    eza fd duckdb trash-cli uv bun psmisc lsof netlify-cli
     (python3.withPackages (ps: with ps; [
       numpy
       sounddevice

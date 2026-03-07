@@ -113,8 +113,10 @@
       ${if isDesktop then ''
       bind Space run-shell "fcitx5-remote -c" \; copy-mode
       bind -n C-S-j copy-mode
+      bind -n '\e[27;6;106~' copy-mode
       '' else ''
       bind -n C-S-j copy-mode
+      bind -n '\e[27;6;106~' copy-mode
       ''}
 
       # --- Copy Mode (vi) ---
