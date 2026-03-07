@@ -48,7 +48,7 @@
 
     extraConfig = ''
       # --- Environment ---
-      set -g extended-keys on
+      set -g extended-keys always
       set -g detach-on-destroy off
       set -g update-environment "DISPLAY WAYLAND_DISPLAY SSH_AUTH_SOCK"
       set -as terminal-overrides ',*:U8=0'
@@ -112,7 +112,7 @@
       # copy-mode with IME off (desktop only)
       ${if isDesktop then ''
       bind Space run-shell "fcitx5-remote -c" \; copy-mode
-      bind -n C-S-j run-shell "fcitx5-remote -c" \; copy-mode
+      bind -n C-S-j copy-mode
       '' else ''
       bind -n C-S-j copy-mode
       ''}

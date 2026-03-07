@@ -45,6 +45,7 @@
     google-chrome wl-clipboard wofi cliphist
     sway-contrib.grimshot grim slurp xsel
     font-manager wtype xorg.setxkbmap
+    libreoffice
   ];
 
   programs.home-manager.enable = true;

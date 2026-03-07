@@ -1,5 +1,5 @@
 #waybar {
-    font-family: "Noto Sans CJK JP";
+    font-family: "Noto Sans CJK JP", "Font Awesome 6 Free Solid";
     font-size: 17px;
 }
 
@@ -13,9 +13,9 @@ window#waybar {
     box-shadow: none;
     text-shadow: none;
     transition-duration: 0s;
-    color: rgba(217, 216, 216, 1);
-    background: #1a1b26; 
-} 
+    color: #cdd6f4;
+    background: #1e1e2e;
+}
 
 #workspaces {
     margin: 0 5px;
@@ -23,49 +23,45 @@ window#waybar {
 
 #workspaces button {
     padding: 0 8px;
-    color: #565f89;
-    border: 3px solid rgba(9, 85, 225, 0);
+    color: #6c7086;
+    border: 3px solid rgba(137, 180, 250, 0);
     border-radius: 10px;
     min-width: 33px;
 }
 
 #workspaces button.visible {
-    color: #a9b1d6;
+    color: #bac2de;
 }
 
 #workspaces button.focused {
-    border-top: 3px solid #7aa2f7;
-    border-bottom: 3px solid #7aa2f7;
+    border-top: 3px solid #89b4fa;
+    border-bottom: 3px solid #89b4fa;
 }
 
 #workspaces button.urgent {
-    background-color: #a96d1f;
-    color: white;
+    background-color: #fab387;
+    color: #1e1e2e;
 }
 
 #workspaces button:hover {
     box-shadow: inherit;
-    border-color: #bb9af7;
-    color: #bb9af7;
+    border-color: #cba6f7;
+    color: #cba6f7;
 }
 
 /* Repeat style here to ensure properties are overwritten as there's no !important and button:hover above resets the colour */
 
 #workspaces button.focused {
-    color: #7aa2f7;
+    color: #89b4fa;
 }
 #workspaces button.focused:hover {
-    color: #bb9af7;
-}
-
-#pulseaudio {
-    /* font-size: 26px; */
+    color: #cba6f7;
 }
 
 #custom-recorder {
-	font-size: 18px;
-	margin: 2px 7px 0px 7px;
-	color:#ee2e24;
+    font-size: 18px;
+    margin: 2px 7px 0px 7px;
+    color: #f38ba8;
 }
 
 #tray,
@@ -88,37 +84,31 @@ window#waybar {
 #custom-media {
     margin: 0px 0px 0px 10px;
     padding: 0 5px;
-    /* border-top: 3px solid rgba(217, 216, 216, 0.5); */
 }
 
-/* #clock {
-    margin:     0px 16px 0px 10px;
-    min-width:  140px;
-} */
-
 #battery.warning {
-    color: rgba(255, 210, 4, 1);
+    color: #f9e2af;
 }
 
 #battery.critical {
-    color: rgba(238, 46, 36, 1);
+    color: #f38ba8;
 }
 
 #battery.charging {
-    color: rgba(217, 216, 216, 1);
+    color: #cdd6f4;
 }
 
 #custom-storage.warning {
-    color: rgba(255, 210, 4, 1);
+    color: #f9e2af;
 }
 
 #custom-storage.critical {
-    color: rgba(238, 46, 36, 1);
+    color: #f38ba8;
 }
 
 @keyframes blink {
     to {
-        background-color: #ffffff;
-        color: black;
+        background-color: #cdd6f4;
+        color: #1e1e2e;
     }
 }

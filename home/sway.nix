@@ -26,9 +26,9 @@ let
     [color]
 gradient = 1
     gradient_count = 3
-    gradient_color_1 = '#0000cc'
-    gradient_color_2 = '#00aacc'
-    gradient_color_3 = '#00ffff'
+    gradient_color_1 = '#cba6f7'
+    gradient_color_2 = '#89b4fa'
+    gradient_color_3 = '#94e2d5'
   '';
   sttStart = pkgs.writeShellScript "stt-start" ''
     SINK=$(pactl get-default-sink)
@@ -100,28 +100,28 @@ in
       floating.titlebar = false;
       floating.border = 0;
 
-      # --- Colors ---
+      # --- Colors (Catppuccin Mocha) ---
       colors = {
         focused = {
-          border = "#36363a";
-          background = "#36363a";
-          text = "#d4d4d4";
-          indicator = "#1e1e1e";
-          childBorder = "#36363a";
+          border = "#89b4fa";
+          background = "#1e1e2e";
+          text = "#cdd6f4";
+          indicator = "#cba6f7";
+          childBorder = "#89b4fa";
         };
         focusedInactive = {
-          border = "#1e1e1e";
-          background = "#1e1e1e";
-          text = "#d4d4d4";
-          indicator = "#1e1e1e";
-          childBorder = "#1e1e1e";
+          border = "#313244";
+          background = "#1e1e2e";
+          text = "#bac2de";
+          indicator = "#313244";
+          childBorder = "#313244";
         };
         unfocused = {
-          border = "#1e1e1e";
-          background = "#1e1e1e";
-          text = "#d4d4d4";
-          indicator = "#1e1e1e";
-          childBorder = "#1e1e1e";
+          border = "#181825";
+          background = "#1e1e2e";
+          text = "#6c7086";
+          indicator = "#181825";
+          childBorder = "#181825";
         };
       };
 
@@ -239,7 +239,7 @@ in
         # system
         "${mod}+Shift+q" = "exec swaynag -t warning -m 'Shutdown?' -b 'Yes' 'shutdown -h now'";
         "${mod}+Shift+b" = "exec bluetoothctl connect 70:5A:6F:62:A9:D1";
-        "${mod}+Shift+i" = ''exec sh -c 'OUTPUT=$(nmcli device wifi connect "Pixel_6859" password "jn95vj7qt386czp" 2>&1); notify-send "WiFi" "$OUTPUT"' '';
+        "${mod}+Shift+i" = ''exec sh -c 'OUTPUT=$(nmcli connection up "Pixel_6859" 2>/dev/null || nmcli device wifi connect "Pixel_6859" password "jn95vj7qt386czp" 2>&1); notify-send "WiFi" "$OUTPUT"' '';
         "${mod}+Shift+9" = "exec swaymsg 'seat seat0 hide_cursor 0'";
         "${mod}+Shift+0" = "exec swaymsg 'seat seat0 hide_cursor 1000'";
       };

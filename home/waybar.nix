@@ -61,16 +61,16 @@ in
           disable-markup = false;
           format = "{icon}";
           format-icons = {
-            "1" = "1 <span font='Font Awesome 5 Free Solid 14'>${fa-terminal}</span>";
-            "2" = "2 <span font='Font Awesome 5 Free Solid 14'>${fa-chrome}</span>";
-            "3" = "3 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "4" = "4 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "5" = "5 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "6" = "6 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "7" = "7 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "8" = "8 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "9" = "9 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
-            "10" = "0 <span font='Font Awesome 5 Free Solid 14'>${fa-gamepad}</span>";
+            "1" = "1 <span font='Font Awesome 6 Free Solid 14'>${fa-terminal}</span>";
+            "2" = "2 <span font='Font Awesome 6 Free Solid 14'>${fa-chrome}</span>";
+            "3" = "3 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "4" = "4 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "5" = "5 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "6" = "6 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "7" = "7 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "8" = "8 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "9" = "9 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
+            "10" = "0 <span font='Font Awesome 6 Free Solid 14'>${fa-gamepad}</span>";
           };
         };
         "sway/window" = {
@@ -94,7 +94,7 @@ in
         };
         memory = {
           interval = 15;
-          format = "<span font='Font Awesome 5 Free Solid 9'>${fa-memory}</span> {used:0.1f}G/{total:0.1f}G";
+          format = "<span font='Font Awesome 6 Free Solid 9'>${fa-memory}</span> {used:0.1f}G/{total:0.1f}G";
           tooltip = false;
         };
         temperature = {
@@ -108,11 +108,11 @@ in
 
         # --- Hardware ---
         battery = {
-          format = "<span font='Font Awesome 5 Free Solid 11'>{icon}</span> {capacity}%{time}";
+          format = "<span font='Font Awesome 6 Free Solid 11'>{icon}</span> {capacity}%{time}";
           format-icons = [ fa-bat0 fa-bat1 fa-bat2 fa-bat3 fa-bat4 ];
           format-time = " ({H}h{M}m)";
-          format-charging = "<span font='Font Awesome 5 Free Solid'>${fa-bolt}</span>  <span font='Font Awesome 5 Free Solid 11'>{icon}</span>  {capacity}% - {time}";
-          format-full = "<span font='Font Awesome 5 Free Solid'>${fa-bolt}</span>  <span font='Font Awesome 5 Free Solid 11'>{icon}</span>  Charged";
+          format-charging = "<span font='Font Awesome 6 Free Solid'>${fa-bolt}</span>  <span font='Font Awesome 6 Free Solid 11'>{icon}</span>  {capacity}% - {time}";
+          format-full = "<span font='Font Awesome 6 Free Solid'>${fa-bolt}</span>  <span font='Font Awesome 6 Free Solid 11'>{icon}</span>  Charged";
           interval = 15;
           states = {
             warning = 25;
@@ -122,18 +122,18 @@ in
         };
         network = {
           format = "{icon}";
-          format-alt = "<span font='Font Awesome 5 Free Solid 10'>${fa-globe}</span> {ipaddr}/{cidr} {icon}";
+          format-alt = "<span font='Font Awesome 6 Free Solid 10'>${fa-globe}</span> {ipaddr}/{cidr} {icon}";
           format-alt-click = "click-left";
-          format-wifi = "<span font='Font Awesome 5 Free Solid 10'>${fa-wifi}</span> {essid} ({signalStrength}%)";
-          format-ethernet = "<span font='Font Awesome 5 Free Solid 10'>${fa-globe}</span> {ifname}";
+          format-wifi = "<span font='Font Awesome 6 Free Solid 10'>${fa-wifi}</span> {essid} ({signalStrength}%)";
+          format-ethernet = "<span font='Font Awesome 6 Free Solid 10'>${fa-globe}</span> {ifname}";
           format-disconnected = "${fa-warning} Disconnected";
           tooltip = false;
         };
         pulseaudio = {
-          format = "<span font='Font Awesome 5 Free Solid 11'>{icon:2}</span>{volume}%";
-          format-alt = "<span font='Font Awesome 5 Free Solid 11'>{icon:2}</span>{volume}%";
+          format = "<span font='Font Awesome 6 Free Solid 11'>{icon:2}</span>{volume}%";
+          format-alt = "<span font='Font Awesome 6 Free Solid 11'>{icon:2}</span>{volume}%";
           format-alt-click = "click-right";
-          format-muted = "<span font='Font Awesome 5 Free Solid 11'>${fa-volume-mute}</span>";
+          format-muted = "<span font='Font Awesome 6 Free Solid 11'>${fa-volume-mute}</span>";
           format-icons = {
             phone = [ " ${fa-volume-off}" " ${fa-volume-down}" " ${fa-volume-up}" " ${fa-volume-up}" ];
             default = [ fa-volume-off fa-volume-down fa-volume-up fa-volume-up ];
@@ -155,7 +155,7 @@ in
         "custom/powermenu" = {
           return-type = "json";
           exec = "~/.config/waybar/modules/powermenu.sh";
-          format = "<span font='Font Awesome 5 Free Solid 9'>{icon}</span>  {}";
+          format = "<span font='Font Awesome 6 Free Solid 9'>{icon}</span>  {}";
           format-icons = [ fa-power-off ];
           interval = 3600;
           escape = true;

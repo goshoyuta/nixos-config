@@ -18,28 +18,30 @@
       confirm-close-surface = false;
 
       # --- Keybindings ---
-      keybind = [];
+      keybind = [
+        "ctrl+shift+j=text:\x1b[27;6;106~"
+      ];
 
-      # --- Colors (Tokyo Night) ---
-      background = "1a1b26";
-      foreground = "c0caf5";
+      # --- Colors (Catppuccin Mocha) ---
+      background = "1e1e2e";
+      foreground = "cdd6f4";
       palette = [
-        "0=#15161E"
-        "1=#f7768e"
-        "2=#9ece6a"
-        "3=#e0af68"
-        "4=#7aa2f7"
-        "5=#bb9af7"
-        "6=#7dcfff"
-        "7=#a9b1d6"
-        "8=#414868"
-        "9=#f7768e"
-        "10=#9ece6a"
-        "11=#e0af68"
-        "12=#7aa2f7"
-        "13=#bb9af7"
-        "14=#7dcfff"
-        "15=#c0caf5"
+        "0=#45475a"
+        "1=#f38ba8"
+        "2=#a6e3a1"
+        "3=#f9e2af"
+        "4=#89b4fa"
+        "5=#f5c2e7"
+        "6=#94e2d5"
+        "7=#bac2de"
+        "8=#585b70"
+        "9=#f38ba8"
+        "10=#a6e3a1"
+        "11=#f9e2af"
+        "12=#89b4fa"
+        "13=#f5c2e7"
+        "14=#94e2d5"
+        "15=#a6adc8"
       ];
 
     };

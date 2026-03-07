@@ -12,36 +12,36 @@
       indicator-thickness = 10;
       line-uses-ring = true;
 
-      # --- Colors (Nord) ---
-      color = "2e3440ff";
+      # --- Colors (Catppuccin Mocha) ---
+      color = "1e1e2eff";
 
       # inside
-      inside-color = "2e3440ff";
-      inside-clear-color = "81a1c1ff";
-      inside-ver-color = "5e81acff";
-      inside-wrong-color = "bf616aff";
+      inside-color = "1e1e2eff";
+      inside-clear-color = "89dcebff";
+      inside-ver-color = "89b4faff";
+      inside-wrong-color = "f38ba8ff";
 
       # ring
-      ring-color = "3b4252ff";
-      ring-clear-color = "88c0d0ff";
-      ring-ver-color = "81a1c1ff";
-      ring-wrong-color = "d08770ff";
+      ring-color = "313244ff";
+      ring-clear-color = "94e2d5ff";
+      ring-ver-color = "89b4faff";
+      ring-wrong-color = "eba0acff";
 
       # text
-      text-color = "eceff4ff";
-      text-clear-color = "3b4252ff";
-      text-ver-color = "3b4252ff";
-      text-wrong-color = "3b4252ff";
+      text-color = "cdd6f4ff";
+      text-clear-color = "cdd6f4ff";
+      text-ver-color = "cdd6f4ff";
+      text-wrong-color = "cdd6f4ff";
 
       # key highlight
-      key-hl-color = "a3be8cff";
-      bs-hl-color = "b48eadff";
-      caps-lock-bs-hl-color = "d08770ff";
-      caps-lock-key-hl-color = "ebcb8bff";
+      key-hl-color = "a6e3a1ff";
+      bs-hl-color = "f38ba8ff";
+      caps-lock-bs-hl-color = "eba0acff";
+      caps-lock-key-hl-color = "f9e2afff";
 
       # misc
-      layout-bg-color = "2e3440ff";
-      separator-color = "3b4252ff";
+      layout-bg-color = "1e1e2eff";
+      separator-color = "313244ff";
     };
   };
 }
