@@ -129,11 +129,13 @@
       bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
       ''}
 
-      # --- Style (Tokyo Night) ---
+      # --- Style ---
       set -g allow-rename on
       set -g renumber-windows on
       set -g status-position top
 
+      ${if isDesktop then ''
+      # --- Tokyo Night ---
       # pane border
       set -g pane-border-style "fg=#414868"
       set -g pane-active-border-style "fg=#7aa2f7"
@@ -144,7 +146,6 @@
 
       # status line - 2段表示: セッション(上) / ウィンドウ(下)
       set -g status 2
-      # status-style を青にして、上段の余白も青で塗りつぶす
       set -g status-style "fg=#1a1b26,bg=#7aa2f7"
 
       # 上段: PREFIX (左・8文字) + セッション名 (中央・青背景で横いっぱい) + REMOTE (右・8文字)
@@ -153,6 +154,26 @@
 
       # 下段: ウィンドウ一覧 (中央) - fill=#1a1b26 で暗色背景
       set -g status-format[1] "#[fill=#1a1b26]#[bg=#1a1b26]#[fg=#c0caf5]#[align=centre]#{W:#[fg=#565f89]#[bg=#1a1b26] #W ,#[fg=#7aa2f7]#[bg=#24283b]#[bold] #W #[default]#[bg=#1a1b26]}"
+      '' else ''
+      # --- Gruvbox Dark ---
+      # pane border
+      set -g pane-border-style "fg=#504945"
+      set -g pane-active-border-style "fg=#d79921"
+
+      # focus (background color)
+      setw -g window-active-style "bg=terminal"
+      setw -g window-style "bg=#1d2021"
+
+      # status line - 2段表示: セッション(上) / ウィンドウ(下)
+      set -g status 2
+      set -g status-style "fg=#1d2021,bg=#d79921"
+
+      # 上段: PREFIX + セッション名 + REMOTE
+      set -g status-format[0] "#[fill=#d79921]#[bg=#d79921]#[fg=#1d2021]#{?client_prefix,#[bg=#cc241d]#[bold] PREFIX #[bg=#d79921]#[fg=#1d2021]#[nobold],        }#[align=centre]#[bold] #S #[align=right]#[nobold]#{?#{==:#{client_key_table},off},#[bg=#fe8019]#[bold] REMOTE #[bg=#d79921]#[fg=#1d2021]#[nobold],        }"
+
+      # 下段: ウィンドウ一覧
+      set -g status-format[1] "#[fill=#1d2021]#[bg=#1d2021]#[fg=#ebdbb2]#[align=centre]#{W:#[fg=#928374]#[bg=#1d2021] #W ,#[fg=#d79921]#[bg=#3c3836]#[bold] #W #[default]#[bg=#1d2021]}"
+      ''}
     '';
   };
 }
