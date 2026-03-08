@@ -168,6 +168,14 @@
         '';
       };
 
+      mvultr = {
+        description = "Open ghostty terminal connected to vultr server via mosh+tmux";
+        body = ''
+          ssh -N -L 8080:localhost:3000 vultr >/dev/null 2>&1 &
+          setsid ghostty -e env TERM=xterm-256color mosh vultr -- tmux new-session -A -s main >/dev/null 2>&1 &
+        '';
+      };
+
       oci = {
         description = "Open ghostty terminal connected to OCI server";
         body = ''
