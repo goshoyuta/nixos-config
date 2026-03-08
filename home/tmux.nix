@@ -1,4 +1,4 @@
-{ config, pkgs, isDesktop, ... }:
+{ config, lib, pkgs, isDesktop, ... }:
 
 {
   programs.tmux = {
@@ -44,6 +44,12 @@
           set -g @fingers-ctrl-action "xdg-open {}"
         '';
       }
+      {
+        plugin = jump;
+        extraConfig = ''
+          set -g @jump-key j
+        '';
+      }
     ];
 
     extraConfig = ''
@@ -58,17 +64,6 @@
       # --- Clipboard (OSC 52 for SSH) ---
       set -g set-clipboard on
       set -as terminal-overrides ',xterm-256color:Ms=\E]52;%p1%s;%p2%s\007'
-
-      # --- Remote Mode (F12 toggle) ---
-      bind -T root F12 \
-        set key-table off \;\
-        set status-style "fg=colour235,bg=colour238" \;\
-        refresh-client -S
-
-      bind -T off F12 \
-        set -u key-table \;\
-        set -u status-style \;\
-        refresh-client -S
 
       # --- Keybindings ---
 
@@ -90,8 +85,6 @@
       bind c new-window -c '#{pane_current_path}'
 
       # session
-      bind o run-shell "fish -c tm-switch"
-      # bind o display-popup -E "fish -c tm-switch"
       bind C command-prompt -p "New Session Name:" "new-session -s '%%'"
       bind m command-prompt -p "send window to session:" "move-window -t '%%':"
       bind -r -n M-[ run-shell "tmux switch-client -p 2>/dev/null || tmux switch-client -t $(tmux ls | tail -1 | cut -d: -f1)"
@@ -111,8 +104,8 @@
 
       # copy-mode with IME off (desktop only)
       ${if isDesktop then ''
-      bind Space run-shell "fcitx5-remote -c" \; copy-mode
-      bind -n C-S-j copy-mode
+      bind k run-shell "fcitx5-remote -c" \; copy-mode
+      bind -n C-S-j run-shell "fcitx5-remote -c" \; copy-mode
       '' else ''
       bind -n C-S-j copy-mode
       ''}
@@ -176,4 +169,11 @@
       ''}
     '';
   };
+
+  # home-manager switch 後に tmux の設定を自動リロード
+  home.activation.reloadTmux = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
+      $DRY_RUN_CMD tmux source-file ~/.config/tmux/tmux.conf || true
+    fi
+  '';
 }

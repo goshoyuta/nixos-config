@@ -61,6 +61,20 @@ gradient = 1
       ${pkgs.libnotify}/bin/notify-send -a img-to-vultr -u critical "img-to-vultr failed" "No PNG in clipboard?"
     fi
   '';
+  screenshotAndTransfer = pkgs.writeShellScript "screenshot-and-transfer" ''
+    MODE="$1"  # "area" or "screen"
+    TMPFILE=$(mktemp /tmp/screenshot_XXXXXX.png)
+    REMOTE_PATH="/tmp/screenshot_$(date '+%y%m%d%H%M%S').png"
+    if ${pkgs.sway-contrib.grimshot}/bin/grimshot save "$MODE" "$TMPFILE"; then
+      ${pkgs.wl-clipboard}/bin/wl-copy < "$TMPFILE"
+      if scp "$TMPFILE" "vultr:$REMOTE_PATH" 2>/dev/null; then
+        ${pkgs.libnotify}/bin/notify-send -a screenshot "Screenshot transferred" "$REMOTE_PATH"
+      else
+        ${pkgs.libnotify}/bin/notify-send -a screenshot -u critical "Transfer failed" "Clipboard only"
+      fi
+      rm -f "$TMPFILE"
+    fi
+  '';
   wallpaper = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/elementary/wallpapers/master/backgrounds/Snow-Capped%20Mountain.jpg";
     name = "nature-wallpaper.jpg";
@@ -91,7 +105,7 @@ in
       menu = menu;
       fonts = {
         names = [ "Noto Sans CJK JP" ];
-        size = 14.0;
+        size = 13.0;
       };
       workspaceLayout = "default";
       defaultWorkspace = "workspace number 1";
@@ -226,9 +240,9 @@ in
         "XF86Search" = "exec ${menu}";
 
         # screenshot (grimshot)
-        "${mod}+Shift+s" = ''exec grimshot --notify copy area'';
+        "${mod}+Shift+s" = "exec ${screenshotAndTransfer} area";
         "${mod}+Shift+w" = ''exec grimshot --notify save area ~/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png'';
-        "${mod}+Shift+f" = "exec grimshot --notify copy screen";
+        "${mod}+Shift+f" = "exec ${screenshotAndTransfer} screen";
 
         # clipboard (cliphist)
         "${mod}+v" = "exec sh -c 'cliphist list | wofi --show dmenu -G insensitive=true | cliphist decode | wl-copy'";
@@ -283,6 +297,7 @@ in
   };
 
   wayland.windowManager.sway.extraConfig = ''
+      focus_wrapping yes
       for_window [app_id="com.mitchellh.ghostty"] opacity 0.8
       title_align center
       no_focus [title="^Peek preview$"]

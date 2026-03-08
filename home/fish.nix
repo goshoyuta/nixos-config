@@ -209,6 +209,27 @@
         '';
       };
 
+      nbs = {
+        description = "Search nb notes with fzf";
+        body = ''
+          set -l id (nb list | fzf --preview 'nb show {1}' | awk '{print $1}')
+          if test -n "$id"
+              nb edit $id
+          end
+        '';
+      };
+
+      nb-ai = {
+        description = "Generate a note with Claude and save to nb";
+        body = ''
+          if test (count $argv) -eq 0
+              echo "Usage: nb-ai <topic>"
+              return 1
+          end
+          claude -p "$argv" | nb add --title "$argv"
+        '';
+      };
+
     };
 
     # --- Plugins ---
