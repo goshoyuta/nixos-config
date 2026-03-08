@@ -62,8 +62,9 @@ gradient = 1
     fi
   '';
   wallpaper = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/main/landscapes/forrest.png";
-    sha256 = "00qx3h60s92hmf09ik1s3984jym6li270201qqzs5x4yks7q6flc";
+    url = "https://raw.githubusercontent.com/elementary/wallpapers/master/backgrounds/Snow-Capped%20Mountain.jpg";
+    name = "nature-wallpaper.jpg";
+    sha256 = "08z9yxcp23b4vi14w6kwd9pdz8rghca6i2h0my3myh6p96fgdiq4";
   };
   toggleDim = pkgs.writeShellScript "toggle-dim" ''
     STATE="/tmp/.display_dim"
@@ -107,11 +108,11 @@ in
       # --- Colors (Catppuccin Mocha) ---
       colors = {
         focused = {
-          border = "#89b4fa";
+          border = "#1e1e2e";
           background = "#1e1e2e";
           text = "#cdd6f4";
           indicator = "#cba6f7";
-          childBorder = "#89b4fa";
+          childBorder = "#1e1e2e";
         };
         focusedInactive = {
           border = "#313244";
@@ -282,7 +283,7 @@ in
   };
 
   wayland.windowManager.sway.extraConfig = ''
-      for_window [app_id="com.mitchellh.ghostty"] opacity 0.9
+      for_window [app_id="com.mitchellh.ghostty"] opacity 0.8
       title_align center
       no_focus [title="^Peek preview$"]
       no_focus [app_id="stt-overlay"]
