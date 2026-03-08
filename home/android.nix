@@ -27,6 +27,7 @@
     fzf
     ghq
     lazygit
+    mosh
   ];
 
   programs.home-manager.enable = true;
