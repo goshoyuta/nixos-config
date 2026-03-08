@@ -20,7 +20,7 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, ... }:
     let
       system = "x86_64-linux";
-      mkHost = { hostDir, extraModules ? [ ], isDesktop }:
+      mkHost = { hostDir, extraModules ? [ ], isDesktop, system ? "x86_64-linux" }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
@@ -51,6 +51,12 @@
         vultr-nixos = mkHost {
           hostDir = ./hosts/server/configuration.nix;
           isDesktop = false;
+        };
+
+        oci-nixos = mkHost {
+          hostDir = ./hosts/oci/configuration.nix;
+          isDesktop = false;
+          system = "aarch64-linux";
         };
       };
 

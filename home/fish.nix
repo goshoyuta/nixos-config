@@ -73,7 +73,7 @@
       nbta = "nb todo add";
 
       # open vultr in a new Ghostty window (avoids tmux nesting)
-      "ssh vultr" = "vultr";
+      # "ssh vultr" = "vultr";
 
       # other
       mu = "neomutt";
@@ -161,46 +161,17 @@
         '';
       };
 
-      tm-switch = {
-        description = "Switch tmux sessions: direct if <=2, popup fzf if >=3";
-        body = ''
-          set -l sessions (tmux list-sessions -F "#{session_name}" 2>/dev/null)
-          set -l count (count $sessions)
-          set -l current (tmux display-message -p "#{session_name}" 2>/dev/null)
-
-          if test $count -le 1
-              tmux display-message "No other sessions to switch to."
-          else if test $count -eq 2
-              for s in $sessions
-                  if test "$s" != "$current"
-                      tmux switch-client -t "$s"
-                      break
-                  end
-              end
-          else
-              tmux display-popup -w 80% -h 60% -E "fish -c _tm_fzf_switch"
-          end
-        '';
-      };
-
-      _tm_fzf_switch = {
-        description = "fzf session switcher (called inside tmux popup)";
-        body = ''
-          set -l session (tmux list-sessions -F "#{session_name}" | \
-              fzf --exit-0 --select-1 \
-                  --preview 'tmux list-windows -t {}' \
-                  --bind 'change:first' \
-                  --bind 'result:transform:[ $FZF_MATCH_COUNT -eq 1 ] && echo accept')
-          if test -n "$session"
-              tmux switch-client -t "$session"
-          end
-        '';
-      };
-
       vultr = {
         description = "Open ghostty terminal connected to vultr server";
         body = ''
           setsid ghostty -e env TERM=xterm-256color ssh -L 8080:localhost:3000 vultr >/dev/null 2>&1 &
+        '';
+      };
+
+      oci = {
+        description = "Open ghostty terminal connected to OCI server";
+        body = ''
+          setsid ghostty -e env TERM=xterm-256color ssh -L 8080:localhost:3000 oci >/dev/null 2>&1 &
         '';
       };
 
