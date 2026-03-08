@@ -102,6 +102,13 @@
       set -x LANG en_US.UTF-8
       set -x LC_ALL en_US.UTF-8
 
+      # fish colors
+      if test "$COLORTERM" = truecolor -o "$COLORTERM" = 24bit
+          set fish_color_autosuggestion 555555
+      else
+          set fish_color_autosuggestion brblack
+      end
+
       # claude
       set -x CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 1
 

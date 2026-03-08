@@ -125,8 +125,8 @@
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
       '' else ''
-      bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-      bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
+      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "base64 | tr -d '\n' | xargs -I{} printf '\033]52;c;%s\a' {} > /dev/tty"
+      bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "base64 | tr -d '\n' | xargs -I{} printf '\033]52;c;%s\a' {} > /dev/tty"
       ''}
 
       # --- Style ---
