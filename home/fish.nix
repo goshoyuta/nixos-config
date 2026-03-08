@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, isDesktop, ... }:
 
 {
   programs.fish = {
