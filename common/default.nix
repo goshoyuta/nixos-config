@@ -52,6 +52,9 @@
     }
   ];
 
+  # --- Tailscale ---
+  services.tailscale.enable = true;
+
   # --- Shell ---
   programs.fish.enable = true;
 

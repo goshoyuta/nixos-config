@@ -22,6 +22,6 @@
     google-cloud-sdk stripe-cli
 
     # network tools
-    sshping
+    sshping mosh
   ];
 }

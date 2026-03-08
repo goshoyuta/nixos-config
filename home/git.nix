@@ -8,6 +8,10 @@
     userName = "goshoyuta";
     userEmail = "goshoyuta@gmail.com";
 
+    aliases = {
+      aicommit = "!f() { COMMITMSG=$(claude --no-session-persistence --print 'Generate ONLY a one-line Git commit message in English using imperative mood. The message should summarize what was changed and why, based strictly on the contents of `git diff --cached`. DO NOT add an explanation or a body. Output ONLY the commit summary line.'); git commit -m \"$COMMITMSG\" -e; }; f";
+    };
+
     extraConfig = {
       # --- Core ---
       core = {

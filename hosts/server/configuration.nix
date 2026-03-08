@@ -9,6 +9,11 @@
 
   networking.hostName = "vultr-nixos";
 
+  # --- Firewall ---
+  networking.firewall.allowedUDPPortRanges = [
+    { from = 60000; to = 61000; } # Mosh
+  ];
+
   # --- SSH ---
   services.openssh = {
     enable = true;

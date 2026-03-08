@@ -40,8 +40,8 @@
   # --- Power ---
   # TLP は nixos-hardware が自動有効化。充電閾値のみ追加設定。
   services.tlp.settings = {
-    START_CHARGE_THRESH_BAT0 = 75;
-    STOP_CHARGE_THRESH_BAT0 = 80;
+    START_CHARGE_THRESH_BAT0 = 80;
+    STOP_CHARGE_THRESH_BAT0 = 90;
   };
 
   # --- Display / Wayland ---
