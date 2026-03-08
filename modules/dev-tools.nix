@@ -20,5 +20,8 @@
     # cloud & infra
     distrobox docker-compose
     google-cloud-sdk stripe-cli
+
+    # network tools
+    sshping
   ];
 }
