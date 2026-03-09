@@ -61,9 +61,9 @@
       set -ga terminal-features "*:passthrough"
       set -ag terminal-overrides ",xterm-256color:RGB"
 
-      # --- Clipboard (OSC 52 for SSH) ---
+      # --- Clipboard (OSC 52 for SSH/mosh) ---
       set -g set-clipboard on
-      set -as terminal-overrides ',xterm-256color:Ms=\E]52;%p1%s;%p2%s\007'
+      set -as terminal-overrides ',xterm-256color:Ms=\E]52;c;%p2%s\007'
 
       # --- Keybindings ---
 
@@ -107,6 +107,7 @@
       bind k run-shell "fcitx5-remote -c" \; copy-mode
       bind -n C-S-j run-shell "fcitx5-remote -c" \; copy-mode
       '' else ''
+      bind k copy-mode
       bind -n C-S-j copy-mode
       ''}
 
@@ -118,8 +119,8 @@
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
       '' else ''
-      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "base64 | tr -d '\n' | xargs -I{} printf '\033]52;c;%s\a' {} > /dev/tty"
-      bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "base64 | tr -d '\n' | xargs -I{} printf '\033]52;c;%s\a' {} > /dev/tty"
+      bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+      bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
       ''}
 
       # --- Style ---
