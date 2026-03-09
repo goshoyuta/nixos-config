@@ -106,7 +106,7 @@
       if test "$COLORTERM" = truecolor -o "$COLORTERM" = 24bit
           set fish_color_autosuggestion 555555
       else
-          set fish_color_autosuggestion brblack
+          set fish_color_autosuggestion 969896
       end
 
       # claude
