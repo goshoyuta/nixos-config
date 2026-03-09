@@ -48,6 +48,16 @@
     libreoffice
   ];
 
+  home.file.".local/bin/diary-add" = {
+    source = ./dotfiles/scripts/diary-add;
+    executable = true;
+  };
+
+  home.file.".local/bin/mdview" = {
+    source = ./dotfiles/scripts/mdview;
+    executable = true;
+  };
+
   programs.home-manager.enable = true;
 
   home.pointerCursor = {

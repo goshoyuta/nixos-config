@@ -4,6 +4,7 @@
   xdg.configFile."fcitx5/config".text = ''
     [Hotkey]
     DeactivateKeys=Escape
+    TogglePreedit=
   '';
 
   xdg.configFile."fcitx5/conf/classicui.conf".text = ''

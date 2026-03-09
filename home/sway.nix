@@ -44,6 +44,7 @@ gradient = 1
     pgrep -f "speech-to-text.*--ptt" || /home/yg/ghq/github.com/yg/speech-to-text/target/release/speech-to-text --language ja --ptt
   '';
   sttStop = pkgs.writeShellScript "stt-stop" ''
+    OLD_CLIP=$(${pkgs.wl-clipboard}/bin/wl-paste 2>/dev/null || echo "")
     kill -USR1 $(cat /tmp/stt.pid) 2>/dev/null || true
     swaymsg '[app_id="stt-overlay"] kill' 2>/dev/null || true
     SINK=$(cat /tmp/stt_mute_sink 2>/dev/null)
@@ -51,6 +52,16 @@ gradient = 1
     if [ -n "$SINK" ] && [ "$WAS_MUTED" = "no" ]; then
       pactl set-sink-mute "$SINK" 0
     fi
+    (
+      for i in $(seq 1 40); do
+        sleep 0.5
+        NEW_CLIP=$(${pkgs.wl-clipboard}/bin/wl-paste 2>/dev/null || echo "")
+        if [ "$NEW_CLIP" != "$OLD_CLIP" ] && [ -n "$NEW_CLIP" ]; then
+          ${pkgs.libnotify}/bin/notify-send -a stt "Transcription complete" "$NEW_CLIP"
+          break
+        fi
+      done
+    ) &
   '';
   imgToVultr = pkgs.writeShellScript "img-to-vultr" ''
     REMOTE_PATH="/tmp/clipboard_$(date +%Y%m%d%H%M%S).png"

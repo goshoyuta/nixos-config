@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""stdin のマークダウンを GitHub 風レイアウトでページャー表示する"""
+import sys
+from rich.console import Console
+from rich.markdown import Markdown, Heading
+from rich.padding import Padding
+from rich.rule import Rule
+from rich.text import Text
+
+
+class GitHubHeading(Heading):
+    STYLES = {
+        "h1": ("bold white", True),
+        "h2": ("bold white", True),
+        "h3": ("bold", False),
+        "h4": ("bold dim", False),
+        "h5": ("bold dim", False),
+        "h6": ("dim", False),
+    }
+
+    def __rich_console__(self, console, options):
+        style, has_rule = self.STYLES.get(self.tag, ("bold", False))
+        text = self.text
+        text.justify = "left"
+        text.stylize(style)
+        yield Padding(text, (1, 0, 0, 0))
+        if has_rule:
+            yield Rule(style="bright_black")
+
+
+Markdown.elements["heading_open"] = GitHubHeading
+
+import io, subprocess, os
+
+text = sys.stdin.read()
+buf = io.StringIO()
+width = min(os.get_terminal_size().columns, 100)
+console = Console(file=buf, width=width, force_terminal=True)
+console.print(Padding(Markdown(text, code_theme="monokai"), (1, 4)))
+subprocess.run(["less", "-R"], input=buf.getvalue(), text=True)

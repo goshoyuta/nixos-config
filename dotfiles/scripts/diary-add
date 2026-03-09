@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""
+音声入力テキストを日記エントリーとして nb に保存するスクリプト
+
+使い方:
+  echo "話した内容" | diary-add
+  wl-paste | diary-add
+  cat transcription.txt | diary-add
+  diary-add  # 入力を直接タイプして Ctrl+D で完了
+"""
+
+import sys
+import os
+import json
+import subprocess
+from datetime import datetime
+
+
+def format_as_diary(text: str, date: str) -> dict:
+    prompt = (
+        f"以下の音声入力テキストを{date}の日記エントリーとして整形し、JSON形式で返してください。\n\n"
+        "JSONの形式:\n"
+        '{"titles": ["候補1", "候補2", "候補3"], "body": "整形した本文"}\n\n'
+        "条件:\n"
+        "- titles: その日の内容を端的に表す日本語タイトル候補を3〜5個考える\n"
+        "- body: 話し言葉を自然な書き言葉に直し、読みやすく整理する。マークダウン形式。タイトルは含めない。「以下に〜」などの前置き文は書かない\n"
+        "- 元の内容・気持ち・出来事を忠実に残す\n"
+        "- JSONのみ出力し、前後に説明文を付けない\n\n"
+        f"Voice input text:\n{text}"
+    )
+
+    result = subprocess.run(
+        ["claude", "-p", prompt],
+        capture_output=True,
+        text=True,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(f"claude コマンドエラー: {result.stderr}")
+
+    # JSONを取り出す
+    output = result.stdout.strip()
+    # コードブロックで囲まれている場合は除去
+    if output.startswith("```"):
+        output = "\n".join(output.split("\n")[1:])
+        output = output.rsplit("```", 1)[0].strip()
+
+    return json.loads(output)
+
+
+def select_title(titles: list[str], date_str: str) -> str:
+    print(f"\nタイトル候補:", file=sys.stderr)
+    for i, title in enumerate(titles, 1):
+        print(f"  {i}. {title}", file=sys.stderr)
+    print(f"  {len(titles)+1}. 自分で入力する", file=sys.stderr)
+
+    while True:
+        try:
+            answer = input(f"\n番号を選んでください (1〜{len(titles)+1}): ").strip()
+            n = int(answer)
+            if 1 <= n <= len(titles):
+                return titles[n - 1]
+            elif n == len(titles) + 1:
+                return input("タイトルを入力: ").strip()
+        except (ValueError, EOFError):
+            pass
+        print("もう一度入力してください", file=sys.stderr)
+
+
+def main():
+    # テキストを標準入力から読む
+    if sys.stdin.isatty():
+        print("テキストを入力してください（完了したら Ctrl+D）:", file=sys.stderr)
+
+    raw_text = sys.stdin.read().strip()
+
+    if not raw_text:
+        print("エラー: テキストが空です", file=sys.stderr)
+        sys.exit(1)
+
+    today = datetime.now()
+    date_str = today.strftime("%Y年%m月%d日")
+
+    print("整形中...", file=sys.stderr)
+    result = format_as_diary(raw_text, date_str)
+
+    # タイトルを選ばせる（端末から入力できるように /dev/tty を使う）
+    sys.stdin = open("/dev/tty")
+    title = select_title(result["titles"], date_str)
+
+    # nb に保存（local ノートブック）
+    content = f"# {title}\n\n{result['body']}"
+    nb_result = subprocess.run(
+        ["nb", "local:add", "--title", title, "--content", content, "--tags", "diary"],
+        capture_output=True,
+        text=True,
+    )
+
+    if nb_result.returncode == 0:
+        print(nb_result.stdout.strip())
+    else:
+        print(f"エラー: {nb_result.stderr}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

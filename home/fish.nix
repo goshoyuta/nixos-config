@@ -212,8 +212,9 @@
       nbs = {
         description = "Search nb notes with fzf";
         body = ''
-          set -l id (nb list | fzf --preview 'nb show {1}' | awk '{print $1}')
-          if test -n "$id"
+          set -l selected (nb list | string replace -ra '\x1b\[[0-9;?]*[a-zA-Z]' "" | fzf --preview 'nb show $(echo {} | awk "{print \$1}" | tr -d "[]")')
+          if test -n "$selected"
+              set -l id (echo $selected | awk '{print $1}' | tr -d '[]')
               nb edit $id
           end
         '';
@@ -227,6 +228,13 @@
               return 1
           end
           claude -p "$argv" | nb add --title "$argv"
+        '';
+      };
+
+      nbv = {
+        description = "View nb note with rich markdown";
+        body = ''
+          nb show $argv --print | string replace -ra '\x1b\[[0-9;?]*[a-zA-Z]' "" | mdview
         '';
       };
 
