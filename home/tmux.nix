@@ -129,9 +129,11 @@ in
       ${if isDesktop then ''
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
+      bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
       '' else ''
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${osc52Copy} #{client_tty}"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "${osc52Copy} #{client_tty}"
+      bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${osc52Copy} #{client_tty}"
       ''}
 
       # --- Style ---
