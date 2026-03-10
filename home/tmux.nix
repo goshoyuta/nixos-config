@@ -5,9 +5,9 @@ let
   # mosh + tmux 環境でも動作するよう、tmux クライアントの tty に直接書き込む
   osc52Copy = pkgs.writeShellScript "osc52-copy" ''
     buf=$(cat)
-    encoded=$(printf '%s' "$buf" | base64 | tr -d '\n')
-    tty=$(tmux display-message -p '#{client_tty}')
-    printf '\033]52;c;%s\a' "$encoded" > "$tty"
+    encoded=$(printf '%s' "$buf" | ${pkgs.coreutils}/bin/base64 | ${pkgs.coreutils}/bin/tr -d '\n')
+    tty="$1"
+    [ -n "$tty" ] && printf '\033]52;c;%s\a' "$encoded" > "$tty"
   '';
 in
 
@@ -130,8 +130,8 @@ in
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
       '' else ''
-      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${osc52Copy}"
-      bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "${osc52Copy}"
+      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${osc52Copy} #{client_tty}"
+      bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "${osc52Copy} #{client_tty}"
       ''}
 
       # --- Style ---
