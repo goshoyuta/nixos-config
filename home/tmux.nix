@@ -1,5 +1,16 @@
 { config, lib, pkgs, isDesktop, ... }:
 
+let
+  # OSC 52 経由でクリップボードをローカル端末に送るスクリプト
+  # mosh + tmux 環境でも動作するよう、tmux クライアントの tty に直接書き込む
+  osc52Copy = pkgs.writeShellScript "osc52-copy" ''
+    buf=$(cat)
+    encoded=$(printf '%s' "$buf" | base64 | tr -d '\n')
+    tty=$(tmux display-message -p '#{client_tty}')
+    printf '\033]52;c;%s\a' "$encoded" > "$tty"
+  '';
+in
+
 {
   programs.tmux = {
     enable = true;
@@ -119,8 +130,8 @@
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
       bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
       '' else ''
-      bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-      bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
+      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${osc52Copy}"
+      bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "${osc52Copy}"
       ''}
 
       # --- Style ---
