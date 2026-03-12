@@ -62,7 +62,7 @@
       tp = "trash-put";
       tl = "trash-list";
       tr = "trash-restore";
-      "rec" = "/home/yg/ghq/github.com/yg/speech-to-text/target/release/speech-to-text --ja";
+      "rec" = "/home/yg/ghq/github.com/yg/speech-to-text/target/release/speech-to-text --lang ja";
 
       # nb
       nba = "nb a";

@@ -87,7 +87,7 @@ gradient = 1
     fi
   '';
   wallpaper = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/elementary/wallpapers/master/backgrounds/Snow-Capped%20Mountain.jpg";
+    url = "https://media.cntravellerme.com/photos/689f18d12fbce89cb03a29aa/16:9/w_1920,c_limit/1323918152";
     name = "nature-wallpaper.jpg";
     sha256 = "08z9yxcp23b4vi14w6kwd9pdz8rghca6i2h0my3myh6p96fgdiq4";
   };
@@ -301,7 +301,7 @@ in
         { command = "wl-paste --watch cliphist store"; }
         { command = ''swaymsg "workspace 2; exec brave --ozone-platform=wayland;"''; }
         { command = ''swaymsg "workspace 1; exec ghostty;"''; }
-        { command = ''swayidle -w timeout 3 "fcitx5-remote -c" timeout 300 "swaylock -f" timeout 600 "swaymsg 'output * dpms off'" resume "swaymsg 'output * dpms on'" before-sleep "swaylock -f"''; }
+        { command = ''swayidle -w timeout 3 "fcitx5-remote -c" timeout 600 "swaylock -f" timeout 600 "swaymsg 'output * dpms off'" resume "swaymsg 'output * dpms on'" before-sleep "swaylock -f"''; }
       ];
     };
 
