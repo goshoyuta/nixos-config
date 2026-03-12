@@ -91,7 +91,7 @@ def main():
     # nb に保存（local ノートブック）
     content = f"# {title}\n\n{result['body']}"
     nb_result = subprocess.run(
-        ["nb", "local:add", "--title", title, "--content", content, "--tags", "diary"],
+        ["nb", "nb:add", "--title", title, "--content", content, "--tags", "diary"],
         capture_output=True,
         text=True,
     )
@@ -101,6 +101,14 @@ def main():
     else:
         print(f"エラー: {nb_result.stderr}", file=sys.stderr)
         sys.exit(1)
+
+    # AI コメント・感想・新視点を表示
+    print("\n--- AI コメント ---", file=sys.stderr)
+    comment_prompt = (
+        f"以下の日記を読んで、感想やコメント、新しい視点を日本語で教えてください。"
+        f"批評的・肯定的な両面から、気づきや問いかけも含めて返してください。\n\n{content}"
+    )
+    subprocess.run(["claude", "-p", comment_prompt])
 
 
 if __name__ == "__main__":

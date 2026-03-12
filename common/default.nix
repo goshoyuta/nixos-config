@@ -7,6 +7,7 @@
 
   # --- Nix ---
   nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
     max-jobs = "auto";
     cores = 0;
     substituters = [
@@ -69,12 +70,4 @@
     unzip zip pciutils usbutils which nkf tree fdupes plocate
   ];
 
-  # --- Home Manager ---
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "hm-backup";
-    extraSpecialArgs = { inherit isDesktop pkgs-unstable; };
-    users.yg = import ../home.nix;
-  };
 }

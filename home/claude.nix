@@ -5,6 +5,17 @@
   home.file.".claude/keybindings.json".source = ../dotfiles/claude/keybindings.json;
   home.file.".serena/serena_config.yml".source = ../dotfiles/serena/serena_config.yml;
 
+  # --- グローバル MCP サーバー設定 ---
+  home.activation.claudeMcpServers = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    _claude_json="$HOME/.claude.json"
+    if [ -f "$_claude_json" ]; then
+      if ! ${pkgs.jq}/bin/jq -e '.mcpServers.playwright' "$_claude_json" > /dev/null 2>&1; then
+        _tmp=$(mktemp)
+        ${pkgs.jq}/bin/jq '.mcpServers.playwright = {"type": "stdio", "command": "npx", "args": ["@playwright/mcp@latest", "--headless"], "env": {}}' "$_claude_json" > "$_tmp" && mv "$_tmp" "$_claude_json"
+      fi
+    fi
+  '';
+
   # --- MCPプラグイン (context7, claude-mem, frontend-design) ---
   home.activation.claudePlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     _pluginInstalled() {

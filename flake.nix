@@ -32,7 +32,6 @@
           };
           modules = [
             hostDir
-            home-manager.nixosModules.home-manager
             agenix.nixosModules.default
           ] ++ extraModules;
         };
@@ -60,8 +59,27 @@
         };
       };
 
-      # Pixel Linux terminal (Android Virtualization Framework)
-      homeConfigurations."user" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations = {
+        "yg@x1carbon" = home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+          extraSpecialArgs = {
+            isDesktop = true;
+            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+          };
+          modules = [ ./home.nix ];
+        };
+
+        "yg@vultr-nixos" = home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+          extraSpecialArgs = {
+            isDesktop = false;
+            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+          };
+          modules = [ ./home.nix ];
+        };
+
+        # Pixel Linux terminal (Android Virtualization Framework)
+        "user" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           system = androidSystem;
           config.allowUnfree = true;
@@ -73,7 +91,8 @@
             config.allowUnfree = true;
           };
         };
-        modules = [ ./home/android.nix ];
+          modules = [ ./home/android.nix ];
+        };
       };
     };
 }
