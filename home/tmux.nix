@@ -25,16 +25,7 @@ in
     plugins = with pkgs.tmuxPlugins; [
       sensible
       prefix-highlight
-      {
-        plugin = vim-tmux-navigator;
-        extraConfig = ''
-          set -g @vim_navigator_mapping_left "M-h"
-          set -g @vim_navigator_mapping_down "M-j"
-          set -g @vim_navigator_mapping_up "M-k"
-          set -g @vim_navigator_mapping_right "M-l"
-          set -g @vim_navigator_mapping_prev ""
-        '';
-      }
+      vim-tmux-navigator
       {
         plugin = resurrect;
         extraConfig = ''
@@ -79,11 +70,18 @@ in
 
       # --- Keybindings ---
 
-      # vim-tmux-navigator のデフォルト C-h/j/k/l バインドを解除（M-* にリマップ済み）
+      # vim-tmux-navigator のデフォルト C-h/j/k/l バインドを解除
       unbind -n C-h
       unbind -n C-j
       unbind -n C-k
       unbind -n C-l
+
+      # pane 移動: M-h/j/k/l（vim/neovim との連携あり）
+      is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+      bind -n M-h if-shell "$is_vim" "send-keys M-h" "select-pane -L"
+      bind -n M-j if-shell "$is_vim" "send-keys M-j" "select-pane -D"
+      bind -n M-k if-shell "$is_vim" "send-keys M-k" "select-pane -U"
+      bind -n M-l if-shell "$is_vim" "send-keys M-l" "select-pane -R"
 
       # window
       bind -n M-c new-window -c "#{pane_current_path}"

@@ -3,7 +3,18 @@
 {
   programs.ghostty = {
     enable = true;
-    package = pkgs-unstable.ghostty;
+    # GTK_IM_MODULE=fcitx (fcitx5 GTK4 モジュール/DBus経由) と
+    # Sway/waylandim (Wayland プロトコル経由) が競合して日本語入力が2重になるため、
+    # Ghostty 起動時に GTK_IM_MODULE をアンセットして Wayland ネイティブ経路のみ使う
+    package = pkgs.symlinkJoin {
+      name = "ghostty";
+      paths = [ pkgs-unstable.ghostty ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/ghostty \
+          --unset GTK_IM_MODULE
+      '';
+    };
     settings = {
       font-family = "Cica";
       font-size = 20;

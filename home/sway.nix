@@ -195,8 +195,8 @@ in
         # remove default binding to use for STT
         "${mod}+space" = null;
 
-        # nixos rebuild + home-manager switch
-        "${mod}+n" = "exec sh -c 'notify-send -a nixos-rebuild \"nixos-rebuild\" \"Build started...\"; REPO=$(ghq root)/github.com/goshoyuta/nixos-config; OUTPUT=$(sudo nixos-rebuild switch --fast --flake $REPO 2>&1 && home-manager switch --flake $REPO 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -a nixos-rebuild -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send -a nixos-rebuild \"nixos-rebuild succeeded\"; fi'";
+        # nixos rebuild (home-manager is integrated as NixOS module, no separate switch needed)
+        "${mod}+n" = "exec sh -c 'notify-send -a nixos-rebuild \"nixos-rebuild\" \"Build started...\"; REPO=$(ghq root)/github.com/goshoyuta/nixos-config; OUTPUT=$(sudo nixos-rebuild switch --fast --flake $REPO 2>&1); if [ $? -ne 0 ]; then echo \"$OUTPUT\" | wl-copy; notify-send -a nixos-rebuild -u critical \"nixos-rebuild failed\" \"Error copied to clipboard\"; else notify-send -a nixos-rebuild \"nixos-rebuild succeeded\"; fi'";
         "${mod}+Shift+n" = "exec makoctl dismiss";
         # app launch
         "${mod}+Return" = "exec ghostty";

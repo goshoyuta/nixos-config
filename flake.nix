@@ -10,6 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +18,7 @@
   };
 
   # --- Outputs ---
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, claude-code-overlay, ... }:
     let
       system = "x86_64-linux";
       mkHost = { hostDir, extraModules ? [ ], isDesktop, system ? "x86_64-linux", enableHomeManager ? false }:
@@ -25,6 +26,7 @@
           pkgs-unstable = import nixpkgs-unstable {
             inherit system;
             config.allowUnfree = true;
+            overlays = [ claude-code-overlay.overlays.default ];
           };
         in
         nixpkgs.lib.nixosSystem {
@@ -85,6 +87,7 @@
             pkgs-unstable = import nixpkgs-unstable {
               system = androidSystem;
               config.allowUnfree = true;
+              overlays = [ claude-code-overlay.overlays.default ];
             };
           };
           modules = [ ./home/android.nix ];
