@@ -69,7 +69,7 @@ in
       set -g extended-keys always
       set -g detach-on-destroy off
       set -g update-environment "DISPLAY WAYLAND_DISPLAY SSH_AUTH_SOCK"
-      set -as terminal-overrides ',*:U8=0'
+      set -as terminal-overrides ',*:U8=1'
       set -ga terminal-features "*:passthrough"
       set -ag terminal-overrides ",xterm-256color:RGB"
 
