@@ -33,6 +33,7 @@
 
   # --- Packages ---
   home.packages = with pkgs; [
+    pkgs-unstable.claude-code
     eza fd duckdb trash-cli uv bun psmisc lsof netlify-cli oci-cli nb
     (python3.withPackages (ps: with ps; [
       numpy

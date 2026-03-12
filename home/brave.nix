@@ -16,7 +16,9 @@ in
       buildInputs = [ pkgs.makeWrapper ];
       postBuild = ''
         wrapProgram $out/bin/brave \
-          --run ${resetExitType}
+          --run ${resetExitType} \
+          --unset XMODIFIERS \
+          --add-flags "--enable-wayland-ime"
       '';
     })
   ];
