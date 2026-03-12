@@ -20,20 +20,32 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, agenix, ... }:
     let
       system = "x86_64-linux";
-      mkHost = { hostDir, extraModules ? [ ], isDesktop, system ? "x86_64-linux" }:
+      mkHost = { hostDir, extraModules ? [ ], isDesktop, system ? "x86_64-linux", enableHomeManager ? false }:
+        let
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit isDesktop agenix;
-            pkgs-unstable = import nixpkgs-unstable {
-              inherit system;
-              config.allowUnfree = true;
-            };
+            inherit isDesktop agenix pkgs-unstable;
           };
           modules = [
             hostDir
             agenix.nixosModules.default
-          ] ++ extraModules;
+          ] ++ (if enableHomeManager then [
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit isDesktop pkgs-unstable;
+              };
+              home-manager.users.yg = import ./home.nix;
+            }
+          ] else [ ]) ++ extraModules;
         };
       androidSystem = "aarch64-linux";
     in
@@ -42,6 +54,7 @@
         x1carbon = mkHost {
           hostDir = ./hosts/laptop/configuration.nix;
           isDesktop = true;
+          enableHomeManager = true;
           extraModules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-x1-7th-gen
           ];
@@ -50,6 +63,7 @@
         vultr-nixos = mkHost {
           hostDir = ./hosts/server/configuration.nix;
           isDesktop = false;
+          enableHomeManager = true;
         };
 
         oci-nixos = mkHost {
@@ -60,37 +74,19 @@
       };
 
       homeConfigurations = {
-        "yg@x1carbon" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
-          extraSpecialArgs = {
-            isDesktop = true;
-            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-          };
-          modules = [ ./home.nix ];
-        };
-
-        "yg@vultr-nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
-          extraSpecialArgs = {
-            isDesktop = false;
-            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-          };
-          modules = [ ./home.nix ];
-        };
-
         # Pixel Linux terminal (Android Virtualization Framework)
         "user" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = androidSystem;
-          config.allowUnfree = true;
-        };
-        extraSpecialArgs = {
-          isDesktop = false;
-          pkgs-unstable = import nixpkgs-unstable {
+          pkgs = import nixpkgs {
             system = androidSystem;
             config.allowUnfree = true;
           };
-        };
+          extraSpecialArgs = {
+            isDesktop = false;
+            pkgs-unstable = import nixpkgs-unstable {
+              system = androidSystem;
+              config.allowUnfree = true;
+            };
+          };
           modules = [ ./home/android.nix ];
         };
       };

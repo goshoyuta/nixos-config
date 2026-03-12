@@ -36,6 +36,7 @@
       # --- Keybindings ---
       key-bindings = {
         show-urls-launch = "Control+Shift+K";
+        show-urls-persistent = "none";
         search-start = "none";
         scrollback-up-page = "none";
         scrollback-up-half-page = "none";

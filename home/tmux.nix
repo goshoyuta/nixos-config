@@ -53,6 +53,7 @@ in
         extraConfig = ''
           set -g @fingers-key K
           set -g @fingers-ctrl-action "xdg-open {}"
+          bind -n C-S-k run-shell -b "${pkgs.tmuxPlugins.fingers}/bin/tmux-fingers start #{pane_id}"
         '';
       }
       {
